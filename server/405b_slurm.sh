@@ -42,10 +42,7 @@ for (( i = 1; i <= worker_num; i++ )); do
     echo "Starting Ray worker on $node"
     srun -N 1 -n 1 -w "$node" ${SINGULARITY_WRAP} ray start --address="$head_addr" \
         --num-cpus $SLURM_CPUS_PER_TASK --num-gpus $SLURM_GPUS_PER_NODE --min-worker-port 20001 --max-worker-port 30000 --block &
-    sleep 15
+    sleep 5
 done
 
-sleep 30
-
-# NCCL_DEBUG=TRACE CUDA_LAUNCH_BLOCKING=1 VLLM_TRACE_FUNCTION=1 vllm serve /n/vast-scratch/kempner_dev/shared_data/models/Llama-3.1-405B --tensor-parallel-size 16
-vllm serve /n/vast-scratch/kempner_dev/shared_data/models/Llama-3.1-405B --tensor-parallel-size 16 --enforce-eager
+vllm serve /n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/Llama-3.1-405B --tensor-parallel-size 16 --enforce-eager

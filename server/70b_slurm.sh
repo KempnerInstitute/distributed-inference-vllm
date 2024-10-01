@@ -1,8 +1,8 @@
 #! /bin/bash
 #SBATCH --job-name=vllm_ray
 #SBATCH --account=kempner_dev
-#SBATCH --output /n/home02/tngotiaoco/vllm_serve/%x_%j/output_%j.out  # File to which STDOUT will be written, %j inserts jobid
-#SBATCH --error /n/home02/tngotiaoco/vllm_serve/%x_%j/error_%j.out  # File to which STDERR will be written, %j inserts jobid
+#SBATCH --output <server_log_dir>/%x_%j/output_%j.out  # File to which STDOUT will be written, %j inserts jobid
+#SBATCH --error <server_log_dir>/%x_%j/error_%j.out  # File to which STDERR will be written, %j inserts jobid
 #SBATCH --nodes=1              # Total number of nodes
 #SBATCH --ntasks-per-node=1
 #SBATCH --gpus-per-node=4       # Allocate one gpu per MPI rank
@@ -45,4 +45,4 @@ for (( i = 1; i <= worker_num; i++ )); do
     sleep 5
 done
 
-vllm serve /n/vast-scratch/kempner_dev/shared_data/models/Llama-3.1-70B --tensor-parallel-size 4
+vllm serve /n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/Llama-3.1-70B --tensor-parallel-size 4
