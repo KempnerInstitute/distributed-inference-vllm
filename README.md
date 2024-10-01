@@ -5,6 +5,7 @@ Looking at the [Llama 3.1 announcement](https://huggingface.co/blog/llama31), we
 If we look at the 405B model instead, it requires 810 GB of VRAM to store the model weights, and an additional 123.05 GB of VRAM to hold the KV cache for a request using 128k tokens.
 Since an Nvidia H100 GPU holds 80 GB of VRAM, these models are large enough that they require a multi-gpu setup for 70B and multi-node setup for 405B.
 Based on the memory requirements above, the 70B model requires at least 2 H100s to hold the weights and at least 3 H100s to perform a full context length request, while the 405B model requires at least 11 H100s to hold the weights and at least 12 to perform a full context length request.
+In this repository, we give scripts to set up inference servers using 4 GPUs for 70B and 16 GPUs for 405B with vLLM.
 
 [vLLM](https://docs.vllm.ai/en/latest/index.html) is an open source library that allows us to easily set up an inference server for both Llama 3.1 models on our HPC cluster. The library can shard models using both pipeline parallelism and tensor parallelism, which users can configure as needed to optimize performance.
 Following the instructions below, one should be able to get a server running on a SLURM job for use with other experiments.
