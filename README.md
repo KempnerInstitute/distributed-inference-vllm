@@ -64,3 +64,47 @@ INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
 ```
+
+## Using the vLLM Server
+
+The vLLM server will be set up on the first node of the SLURM job.
+This is marked in the head node in the SLURM job logs through a line like
+```
+Head node: holygpu8a15303
+```
+but can also be found by using `squeue` to look at the nodes provisioned for the job and taking the first one.
+
+You can then ssh into this gpu node. Following the example above, if the first node is `holygpu8a15303`, we can run
+```
+ssh holygpu8a15303
+```
+to enter the gpu node.
+
+The server will then be running on `localhost:8000`. You can send HTTP requests to the `/v1/completions` endpoint to run the model on your prompts.
+```bash
+curl http://localhost:8000/v1/completions \
+    -X POST \
+    -H "Content-Type: application/json" \
+    -d '{
+        "model": "/n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/Llama-3.1-405B",
+        "prompt": "San Francisco is a",
+        "max_tokens": 7,
+        "temperature": 0
+    }'
+```
+Note that the model field for the JSON needs to be the directory of the model being served. vLLM uses the directory to identify the model, so you should use `/n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/Llama-3.1-70B` for 70B and `/n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/Llama-3.1-405B` for 405B
+For Python applications, you can use the `requests` library to send your HTTP requests.
+```python
+import requests
+
+response = requests.post('http://localhost:8000/v1/completions', json = {
+    "model": "/n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/Llama-3.1-405B",
+    "prompt": "San Francisco is a",
+    "max_tokens": 500,
+    "temperature": 0
+})
+
+output = response.json()
+```
+
+Additional arguments like `top_k` and `min_p` are also available for adjusting how tokens are sampled. See the [vLLM docs](https://docs.vllm.ai/en/latest/dev/sampling_params.html) for the available arguments.
