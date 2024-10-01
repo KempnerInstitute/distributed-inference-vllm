@@ -33,7 +33,7 @@ pip install -r requirements.txt
 
 1. Route SLURM logs to desired directory.
 
-You should set output and error logs in the SLURM scripts so that stdout and stderr are routed to accessible files. For example, if one wants to use `/n/home01/username/vllm-inference` for the server log dir, one should replace
+You should set output and error logs in the SLURM scripts (contained in `server/`) so that stdout and stderr are routed to accessible files. For example, if one wants to use `/n/home01/username/vllm-inference` for the server log dir, one should replace
 ```
 #SBATCH --output <server_log_dir>/%x_%j/output_%j.out  # File to which STDOUT will be written, %j inserts jobid
 #SBATCH --error <server_log_dir>/%x_%j/error_%j.out  # File to which STDERR will be written, %j inserts jobid
