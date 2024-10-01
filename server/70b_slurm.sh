@@ -1,6 +1,6 @@
 #! /bin/bash
-#SBATCH --job-name=vllm_ray
-#SBATCH --account=kempner_dev
+#SBATCH --job-name=
+#SBATCH --account=
 #SBATCH --output <server_log_dir>/%x_%j/output_%j.out  # File to which STDOUT will be written, %j inserts jobid
 #SBATCH --error <server_log_dir>/%x_%j/error_%j.out  # File to which STDERR will be written, %j inserts jobid
 #SBATCH --nodes=1              # Total number of nodes
@@ -8,9 +8,9 @@
 #SBATCH --gpus-per-node=4       # Allocate one gpu per MPI rank
 #SBATCH --cpus-per-task=96
 #SBATCH --exclusive
-#SBATCH --time=3-00:00:00
+#SBATCH --time=
 #SBATCH --mem=0			# All memory on the node
-#SBATCH --partition=kempner_h100
+#SBATCH --partition=
 
 module load python/3.10.13-fasrc01
 conda deactivate

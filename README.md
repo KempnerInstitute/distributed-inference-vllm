@@ -31,19 +31,9 @@ conda activate vllm-inference
 pip install -r requirements.txt
 ```
 
-1. Route SLURM logs to desired directory.
+1. Fill out missing SLURM settings
 
-You should set output and error logs in the SLURM scripts (contained in `server/`) so that stdout and stderr are routed to accessible files. For example, if one wants to use `/n/home01/username/vllm-inference` for the server log dir, one should replace
-```
-#SBATCH --output <server_log_dir>/%x_%j/output_%j.out  # File to which STDOUT will be written, %j inserts jobid
-#SBATCH --error <server_log_dir>/%x_%j/error_%j.out  # File to which STDERR will be written, %j inserts jobid
-```
-with
-```
-#SBATCH --output /n/home01/username/vllm-inference/%x_%j/output_%j.out  # File to which STDOUT will be written, %j inserts jobid
-#SBATCH --error /n/home01/username/vllm-inference/%x_%j/error_%j.out  # File to which STDERR will be written, %j inserts jobid
-```
-in the SLURM scripts.
+You should fill out any missing settings in the SLURM scripts contained in `server/`. These settings include the job name (`--job-name`), account (`--account`), logs (`--output` and `--error`), time (`--time`), and partition (`--partition`).
 
 1. Run the SLURM script for the desired model. For example, if you want to run the 405B model, you should run the following command.
 
