@@ -19,6 +19,12 @@ conda create -n vllm-inference python=3.10
 ```
 The SLURM scripts assume the conda environment is named `vllm-inference`, so if you name the environment something else, then please adjust the SLURM scripts as necessary.
 
+1. Activate the conda environment
+
+```bash
+conda activate vllm-inference
+```
+
 1. Install python dependencies.
 
 ```bash
