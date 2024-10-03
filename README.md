@@ -13,30 +13,21 @@ Following the instructions below, one should be able to get a server running on 
 ## Setup Instructions
 
 1. Create a conda environment.
-
 ```bash
 conda create -n vllm-inference python=3.10
 ```
 The SLURM scripts assume the conda environment is named `vllm-inference`, so if you name the environment something else, then please adjust the SLURM scripts as necessary.
-
 1. Activate the conda environment
-
 ```bash
 conda activate vllm-inference
 ```
-
 1. Install python dependencies.
-
 ```bash
 pip install -r requirements.txt
 ```
-
 1. Fill out missing SLURM settings
-
 You should fill out any missing settings in the SLURM scripts contained in `server/`. These settings include the account (`--account`), logs (`--output` and `--error`), and partition (`--partition`). Also adapt any other settings as needed, such as job name (`--job-name`) and time (`--time`).
-
 1. Run the SLURM script for the desired model. For example, if you want to run the 405B model, you should run the following command.
-
 ```bash
 sbatch server/405b_slurm.sh
 ```
@@ -74,7 +65,6 @@ You can then ssh into this gpu node. Following the example above, if the first n
 ssh holygpu8a15303
 ```
 to enter the gpu node.
-
 The server will then be running on `localhost:8000`. You can send HTTP requests to the `/v1/completions` endpoint to run the model on your prompts.
 ```bash
 curl http://localhost:8000/v1/completions \
@@ -87,7 +77,9 @@ curl http://localhost:8000/v1/completions \
         "temperature": 0
     }'
 ```
-Note that the model field for the JSON needs to be the directory of the model being served. vLLM uses the directory to identify the model, so you should use `/n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/Llama-3.1-70B` for 70B and `/n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/Llama-3.1-405B` for 405B
+Note that the model field for the JSON needs to be the directory of the model being served. vLLM uses the directory to identify the model, so you should use 
+- `/n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/Llama-3.1-70B` for 70B
+- `/n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/Llama-3.1-405B` for 405B.
 For Python applications, you can use the `requests` library to send your HTTP requests.
 ```python
 import requests
@@ -101,5 +93,4 @@ response = requests.post('http://localhost:8000/v1/completions', json = {
 
 output = response.json()
 ```
-
 Additional arguments like `top_k` and `min_p` are also available for adjusting how tokens are sampled. See the [vLLM docs](https://docs.vllm.ai/en/latest/dev/sampling_params.html) for the available arguments.
