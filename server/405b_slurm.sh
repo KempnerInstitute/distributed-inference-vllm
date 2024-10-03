@@ -7,9 +7,9 @@
 #SBATCH --time=4:00:00                         # Change job duration as needed
 #SBATCH --nodes=4
 #SBATCH --ntasks-per-node=1
-#SBATCH --gpus-per-node=4
+#SBATCH --gpus-per-node=4                      # All gpus on each node for 16 total GPUs
 #SBATCH --cpus-per-task=96
-#SBATCH --mem=0			                       # All memory on the node
+#SBATCH --mem=0			                       # All memory on each node
 #SBATCH --exclusive
 
 module load python/3.10.13-fasrc01

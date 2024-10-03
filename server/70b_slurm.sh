@@ -7,7 +7,7 @@
 #SBATCH --time=4:00:00                         # Change job duration as needed
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --gpus-per-node=4
+#SBATCH --gpus-per-node=4                      # All gpus on the node for 4 total GPUs
 #SBATCH --cpus-per-task=96
 #SBATCH --mem=0			                       # All memory on the node
 #SBATCH --exclusive
