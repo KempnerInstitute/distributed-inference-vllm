@@ -41,7 +41,7 @@ You should fill out any missing settings in the SLURM scripts contained in `serv
 sbatch server/405b_slurm.sh
 ```
 The script will create a Ray cluster and then start a vLLM server that hosts the model in the first node of the SLURM job.
-This can take some time (~40 minutes for 405B) since the model weights will need to be loaded onto the GPUs.
+This can take some time (up to a couple hours for 405B) since the model weights will need to be loaded onto the GPUs.
 You can check the progress of the model loading by looking at the error logs for the SLURM job, which should have lines like
 ```
 Loading safetensors checkpoint shards:   0% Completed | 0/191 [00:00<?, ?it/s]
