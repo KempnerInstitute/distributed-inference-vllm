@@ -51,4 +51,6 @@ for (( i = 1; i <= worker_num; i++ )); do
     sleep 5
 done
 
+export RAY_ADDRESS="$RAY_HEAD_ADDR"
+
 vllm serve /n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/Llama-3.1-70B --tensor-parallel-size 4
