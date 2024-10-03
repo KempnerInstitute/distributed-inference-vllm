@@ -85,6 +85,7 @@ curl http://localhost:8000/v1/completions \
 Note that the model field for the JSON needs to be the directory of the model being served. vLLM uses the directory to identify the model, so you should use 
 - `/n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/Llama-3.1-70B` for 70B
 - `/n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/Llama-3.1-405B` for 405B.  
+
 For Python applications, you can use the `requests` library to send your HTTP requests.
 ```python
 import requests
