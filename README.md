@@ -12,22 +12,22 @@ Following the instructions below, one should be able to get a server running on 
 
 ## Setup Instructions
 
-1. Create a conda environment.
+1. Create a conda environment.  
     ```bash
     conda create -n vllm-inference python=3.10
     ```
-    The SLURM scripts assume the conda environment is named `vllm-inference`, so if you name the environment something else, then please adjust the SLURM scripts as necessary.
-1. Activate the conda environment
+    The SLURM scripts assume the conda environment is named `vllm-inference`, so if you name the environment something else, then please adjust the SLURM scripts as necessary.  
+1. Activate the conda environment  
     ```bash
     conda activate vllm-inference
     ```
-1. Install python dependencies.
+1. Install python dependencies.  
     ```bash
     pip install -r requirements.txt
     ```
-1. Fill out missing SLURM settings
+1. Fill out missing SLURM settings  
     You should fill out any missing settings in the SLURM scripts contained in `server/`. These settings include the account (`--account`), logs (`--output` and `--error`), and partition (`--partition`). Also adapt any other settings as needed, such as job name (`--job-name`) and time (`--time`).
-1. Run the SLURM script for the desired model. For example, if you want to run the 405B model, you should run the following command.
+1. Run the SLURM script for the desired model. For example, if you want to run the 405B model, you should run the following command.  
     ```bash
     sbatch server/405b_slurm.sh
     ```
