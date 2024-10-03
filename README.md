@@ -33,7 +33,7 @@ pip install -r requirements.txt
 
 1. Fill out missing SLURM settings
 
-You should fill out any missing settings in the SLURM scripts contained in `server/`. These settings include the job name (`--job-name`), account (`--account`), logs (`--output` and `--error`), and partition (`--partition`). Also adapt any other settings as needed, such as time (`--time`).
+You should fill out any missing settings in the SLURM scripts contained in `server/`. These settings include the account (`--account`), logs (`--output` and `--error`), and partition (`--partition`). Also adapt any other settings as needed, such as job name (`--job-name`) and time (`--time`).
 
 1. Run the SLURM script for the desired model. For example, if you want to run the 405B model, you should run the following command.
 

@@ -1,15 +1,15 @@
 #! /bin/bash
-#SBATCH --job-name=
-#SBATCH --account=
-#SBATCH --partition=
-#SBATCH --output <server_log_dir>/%x_%j/output_%j.out  # File to which STDOUT will be written, %j inserts jobid
-#SBATCH --error <server_log_dir>/%x_%j/error_%j.out  # File to which STDERR will be written, %j inserts jobid
-#SBATCH --time=4:00:00
-#SBATCH --nodes=4              # Total number of nodes
+#SBATCH --job-name=vllm-inference-405b         # Change job name as needed
+#SBATCH --account=                             # Example account: kempner-dev
+#SBATCH --partition=                           # Example partition: kempner_h100
+#SBATCH --output <server_log_dir>/%x_%j/output_%j.out  # Set server_log_dir to desired directory. File to which STDOUT will be written, %j inserts jobid
+#SBATCH --error <server_log_dir>/%x_%j/error_%j.out    # Set server_log_dir to desired directory. File to which STDERR will be written, %j inserts jobid
+#SBATCH --time=4:00:00                         # Change job duration as needed
+#SBATCH --nodes=4
 #SBATCH --ntasks-per-node=1
-#SBATCH --gpus-per-node=4       # Allocate one gpu per MPI rank
+#SBATCH --gpus-per-node=4
 #SBATCH --cpus-per-task=96
-#SBATCH --mem=0			# All memory on the node
+#SBATCH --mem=0			                       # All memory on the node
 #SBATCH --exclusive
 
 module load python/3.10.13-fasrc01
