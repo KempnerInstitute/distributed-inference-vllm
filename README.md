@@ -26,21 +26,21 @@ By following the instructions below, one should be able to set up a server runni
     conda create -n vllm-inference python=3.10
     ```
 
-    Adjust the name of your Conda environment in SLURM scripts (default is `vllm-inference`).
+    Adjust the name of your Conda environment in the SLURM scripts (default is `vllm-inference`).
 
-2. Activate the conda environment.
+1. Activate the conda environment.
     
     ```bash
     conda activate vllm-inference
     ```
 
-3. Install python dependencies.
+1. Install python dependencies.
     
     ```bash
     pip install -r requirements.txt
     ```
 
-4. Set parameters in the SLURM scripts
+1. Set parameters in the SLURM scripts
     
 Find the SLURM scripts in the `server/` directory,
     
@@ -50,7 +50,7 @@ Find the SLURM scripts in the `server/` directory,
     --job-name: Job Name
     --time: Job Duration 
 
-5. Run the SLURM script for the desired model. 
+1. Run the SLURM script for the desired model. 
 
 If you want to run the 405B model, you should run the following command,
 
@@ -60,7 +60,7 @@ sbatch server/405b_slurm.sh
 
 The script will create a [Ray cluster](https://docs.ray.io/en/latest/cluster/getting-started.html) and then start a vLLM server that hosts the model in the first node of the SLURM job. This can take some time (up to a couple hours for 405B) since the model weights will need to be loaded onto the GPUs.
 
-You can check the progress of the model loading by looking at the error logs for the SLURM job, which should have lines like,
+You can check the progress of the model loading by looking at the error logs for the SLURM job, which should have lines like
 
 ```
 Loading safetensors checkpoint shards:   0% Completed | 0/191 [00:00<?, ?it/s]
@@ -72,7 +72,7 @@ Loading safetensors checkpoint shards:   1% Completed | 2/191 [00:09<15:58,  5.0
 Loading safetensors checkpoint shards:   2% Completed | 3/191 [00:26<32:54, 10.50s/it]
 ```
 
-When the model is fully loaded and the server is ready to handle requests, you should see lines like,
+When the model is fully loaded and the server is ready to handle requests, you should see lines like
 
 ```
 INFO:     Started server process [2405764]
@@ -90,7 +90,7 @@ This is marked in the head node in the SLURM job logs through a line similar to,
 Head node: holygpu8a15303
 ```
 
-but can also be found by using `squeue` to look at the nodes provisioned for the job and taking the first one. You can then ssh into this gpu node. Following the example above, if the first node is `holygpu8a15303`, we can run the following command to enter the gpu node,
+but can also be found by using `squeue` to look at the nodes provisioned for the job and taking the first one. You can then ssh into this gpu node. Following the example above, if the first node is `holygpu8a15303`, we can run the following command to enter the gpu node.
 
 ```bash
 ssh holygpu8a15303
