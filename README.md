@@ -62,7 +62,7 @@ The script will create a [Ray cluster](https://docs.ray.io/en/latest/cluster/get
 
 You can check the progress of the model loading by looking at the error logs for the SLURM job, which should have lines like,
 
-```bash
+```
 Loading safetensors checkpoint shards:   0% Completed | 0/191 [00:00<?, ?it/s]
 
 Loading safetensors checkpoint shards:   1% Completed | 1/191 [00:04<13:59,  4.42s/it]
@@ -74,7 +74,7 @@ Loading safetensors checkpoint shards:   2% Completed | 3/191 [00:26<32:54, 10.5
 
 When the model is fully loaded and the server is ready to handle requests, you should see lines like,
 
-```bash
+```
 INFO:     Started server process [2405764]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
@@ -86,7 +86,7 @@ INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
 The vLLM server will be set up on the first node of the SLURM job.
 This is marked in the head node in the SLURM job logs through a line similar to,
 
-```bash
+```
 Head node: holygpu8a15303
 ```
 
@@ -98,7 +98,7 @@ ssh holygpu8a15303
 
 The server will then be running on `localhost:8000`. You can send HTTP requests to the `/v1/completions` endpoint to run the model on your prompts.
 
-```bash
+```
 curl http://localhost:8000/v1/completions \
     -X POST \
     -H "Content-Type: application/json" \
