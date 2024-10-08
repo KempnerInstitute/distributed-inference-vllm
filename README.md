@@ -41,16 +41,19 @@ By following the instructions below, one should be able to set up a server runni
     ```
 
 1. Set parameters in the SLURM scripts
-    
-Find the SLURM scripts in the `server/` directory,
-    
+  
+    Find the SLURM scripts in the `server/` directory,
+
+
+    ```
     --account: SLURM Fairshare Account
     --output and --error: Logs
     --partition: Partition
     --job-name: Job Name
     --time: Job Duration 
+    ```
 
-1. Run the SLURM script for the desired model. 
+1. Run the SLURM script for the desired model.
 
 If you want to run the 405B model, you should run the following command,
 
