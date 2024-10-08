@@ -44,11 +44,11 @@ By following the instructions below, one should be able to set up a server runni
     
 Find the SLURM scripts in the `server/` directory,
     
-    - --account: SLURM Fairshare Account
-    - --output and --error: Logs
-    - --partition: Partition
-    - --job-name: Job Name
-    - --time: Job Duration 
+    --account: SLURM Fairshare Account
+    --output and --error: Logs
+    --partition: Partition
+    --job-name: Job Name
+    --time: Job Duration 
 
 5. Run the SLURM script for the desired model. 
 
