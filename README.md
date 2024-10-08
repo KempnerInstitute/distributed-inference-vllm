@@ -53,45 +53,46 @@ Find the SLURM scripts in the `server/` directory,
 5. Run the SLURM script for the desired model. 
 
 If you want to run the 405B model, you should run the following command,
-    
-    ```bash
-    sbatch server/405b_slurm.sh
-    ```
 
-    The script will create a [Ray cluster](https://docs.ray.io/en/latest/cluster/getting-started.html) and then start a vLLM server that hosts the model in the first node of the SLURM job. This can take some time (up to a couple hours for 405B) since the model weights will need to be loaded onto the GPUs.
+```bash
+sbatch server/405b_slurm.sh
+```
 
-    You can check the progress of the model loading by looking at the error logs for the SLURM job, which should have lines like,
+The script will create a [Ray cluster](https://docs.ray.io/en/latest/cluster/getting-started.html) and then start a vLLM server that hosts the model in the first node of the SLURM job. This can take some time (up to a couple hours for 405B) since the model weights will need to be loaded onto the GPUs.
 
-    ```
-    Loading safetensors checkpoint shards:   0% Completed | 0/191 [00:00<?, ?it/s]
-    
-    Loading safetensors checkpoint shards:   1% Completed | 1/191 [00:04<13:59,  4.42s/it]
-    
-    Loading safetensors checkpoint shards:   1% Completed | 2/191 [00:09<15:58,  5.07s/it]
-    
-    Loading safetensors checkpoint shards:   2% Completed | 3/191 [00:26<32:54, 10.50s/it]
-    ```
-    
-    When the model is fully loaded and the server is ready to handle requests, you should see lines like
-    ```
-    INFO:     Started server process [2405764]
-    INFO:     Waiting for application startup.
-    INFO:     Application startup complete.
-    INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-    ```
+You can check the progress of the model loading by looking at the error logs for the SLURM job, which should have lines like,
+
+```bash
+Loading safetensors checkpoint shards:   0% Completed | 0/191 [00:00<?, ?it/s]
+
+Loading safetensors checkpoint shards:   1% Completed | 1/191 [00:04<13:59,  4.42s/it]
+
+Loading safetensors checkpoint shards:   1% Completed | 2/191 [00:09<15:58,  5.07s/it]
+
+Loading safetensors checkpoint shards:   2% Completed | 3/191 [00:26<32:54, 10.50s/it]
+```
+
+When the model is fully loaded and the server is ready to handle requests, you should see lines like,
+
+```bash
+INFO:     Started server process [2405764]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+```
 
 ## Using the vLLM Server
 
 The vLLM server will be set up on the first node of the SLURM job.
 This is marked in the head node in the SLURM job logs through a line similar to,
 
-```
+```bash
 Head node: holygpu8a15303
 ```
 
 but can also be found by using `squeue` to look at the nodes provisioned for the job and taking the first one. You can then ssh into this gpu node. Following the example above, if the first node is `holygpu8a15303`, we can run the following command to enter the gpu node,
 
-```
+```bash
 ssh holygpu8a15303
 ```
 
@@ -114,6 +115,7 @@ Note that the model field for the JSON needs to be the directory of the model be
 - Llama 3.1 405B: `/n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/Llama-3.1-405B`
 
 For Python applications, you can use the `requests` library to send your HTTP requests.
+
 ```python
 import requests
 
