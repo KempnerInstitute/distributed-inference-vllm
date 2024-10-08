@@ -9,7 +9,7 @@
 #SBATCH --ntasks-per-node=1                    # Number of tasks per node
 #SBATCH --gpus-per-node=4                      # Number of GPUs per node (4 per node)
 #SBATCH --cpus-per-task=96                     # CPUs per task (96 in H100 nodes)
-#SBATCH --mem=0			                       # All memory on the node
+#SBATCH --mem=0                                # All memory on the node
 #SBATCH --exclusive                            # Use entire node resources
 
 module load python/3.10.13-fasrc01
