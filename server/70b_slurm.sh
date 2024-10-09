@@ -2,15 +2,15 @@
 #SBATCH --job-name=vllm-inference-70b          # Change job name as needed
 #SBATCH --account=                             # Example account: kempner-dev
 #SBATCH --partition=                           # Example partition: kempner_h100
-#SBATCH --output <server_log_dir>/%x_%j/output_%j.out  # Set server_log_dir to desired directory. File to which STDOUT will be written, %j inserts jobid
-#SBATCH --error <server_log_dir>/%x_%j/error_%j.out    # Set server_log_dir to desired directory. File to which STDERR will be written, %j inserts jobid
+#SBATCH --output %x_%j/output_%j.out           # Output file
+#SBATCH --error %x_%j/error_%j.out             # Error file
 #SBATCH --time=4:00:00                         # Change job duration as needed
-#SBATCH --nodes=1
-#SBATCH --ntasks-per-node=1
-#SBATCH --gpus-per-node=4                      # All gpus on the node for 4 total GPUs
-#SBATCH --cpus-per-task=96
-#SBATCH --mem=0			                       # All memory on the node
-#SBATCH --exclusive
+#SBATCH --nodes=1                              # Number of nodes
+#SBATCH --ntasks-per-node=1                    # Number of tasks per node
+#SBATCH --gpus-per-node=4                      # Number of GPUs per node (4 per node)
+#SBATCH --cpus-per-task=96                     # CPUs per task (96 in H100 nodes)
+#SBATCH --mem=0                                # All memory on the node
+#SBATCH --exclusive                            # Use entire node resources
 
 module load python/3.10.13-fasrc01
 conda deactivate
