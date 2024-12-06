@@ -1,4 +1,4 @@
-## Adopted from the example provided in the vllm documentation
+## Adopted from the example provided in the vllm git repo: https://github.com/vllm-project/vllm/tree/main
 
 import argparse
 from typing import Any, Dict, List
