@@ -1,5 +1,3 @@
-## Adopted from the example provided in the vllm git repo: https://github.com/vllm-project/vllm/tree/main
-
 import argparse
 from typing import Any, Dict, List
 
@@ -19,17 +17,19 @@ parser = argparse.ArgumentParser(description="Run batch inference with Ray Data.
 parser.add_argument('--prompt_file', type=str, required=True, help="Path to the prompt text file.")
 parser.add_argument('--tensor_parallel_size', type=int, default=1, help="Tensor parallel size per instance.")
 parser.add_argument('--model_location', type=str, required=True, help="Model location for the LLM.")
+parser.add_argument('--output_file', type=str, default="./response_output.txt", help="Path to the output file.")
+
 args = parser.parse_args()
 
 # Set tensor parallelism and prompt file from arguments
 tensor_parallel_size = args.tensor_parallel_size
 prompt_file = args.prompt_file
 model_location = args.model_location
+output_file = args.output_file
 
 # Set sampling parameters
 sampling_params = SamplingParams(temperature=0.8, top_p=0.95)
 num_instances = 1  # Set the number of instances. Each instance will use tensor_parallel_size GPUs.
-
 
 # Create a class to do batch inference.
 class LLMPredictor:
@@ -50,10 +50,8 @@ class LLMPredictor:
             "generated_text": generated_text,
         }
 
-
 # Load the prompt file into Ray Data
 ds = ray.data.read_text(prompt_file)
-
 
 # Define scheduling strategy for tensor parallelism
 def scheduling_strategy_fn():
@@ -67,7 +65,6 @@ def scheduling_strategy_fn():
     )
     return dict(scheduling_strategy=PlacementGroupSchedulingStrategy(
         pg, placement_group_capture_child_tasks=True))
-
 
 resources_kwarg: Dict[str, Any] = {}
 if tensor_parallel_size == 1:
@@ -86,21 +83,12 @@ ds = ds.map_batches(
     **resources_kwarg,
 )
 
-# Peek first 10 results
-#outputs = ds.take(limit=10)
 outputs = ds.take_all()
-
-# Peek first 10 results and write them to a file
-with open("response_output.txt", "w") as f:
+with open(output_file, "w") as f:
     for output in outputs:
         prompt = output["prompt"]
         generated_text = output["generated_text"]
         result = f"Prompt: {prompt!r}, Generated text: {generated_text!r}\n"
         f.write(result)
         print(result)  # Print to console as well for quick verification
-
-# Optionally write full inference output data as Parquet files to S3
-# ds.write_parquet("s3://<your-output-bucket>")
-
-
 
