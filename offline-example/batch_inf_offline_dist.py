@@ -1,3 +1,4 @@
+# modified from the example https://docs.vllm.ai/en/latest/getting_started/examples/offline_inference_distributed.html provided at the vllm documentation page
 import argparse
 from typing import Any, Dict, List
 
