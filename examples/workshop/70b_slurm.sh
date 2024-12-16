@@ -8,13 +8,13 @@
 #SBATCH --gpus-per-node=4       # Allocate one gpu per MPI rank
 #SBATCH --cpus-per-task=96
 #SBATCH --exclusive
-#SBATCH --time=3-00:00:00
+#SBATCH --time=3:00:00
 #SBATCH --mem=0			# All memory on the node
 #SBATCH --partition=kempner_h100
 
 module load python/3.10.13-fasrc01
 conda deactivate
-conda activate vllm2
+conda activate /n/netscratch/kempner_dev/Everyone/software/vllm-inference
 
 # choose available port on the head node
 head_port=`comm -23 <(seq 15000 20000 | sort) <(ss -Htan | awk '{print $4}' | cut -d':' -f2 | sort -u) | shuf | head -n 1`
