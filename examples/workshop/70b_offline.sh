@@ -1,8 +1,7 @@
 #! /bin/bash
-#SBATCH --job-name=vllm_ray
-#SBATCH --account=kempner_dev
-#SBATCH --output /n/home02/tngotiaoco/inference_workshop/%x_%j/output_%j.out  # File to which STDOUT will be written, %j inserts jobid
-#SBATCH --error /n/home02/tngotiaoco/inference_workshop/%x_%j/error_%j.out  # File to which STDERR will be written, %j inserts jobid
+#SBATCH --job-name=vllm_offline_inference_workshop
+#SBATCH --output <user_path>/inference_workshop/%x_%j/output_%j.out  # File to which STDOUT will be written, %j inserts jobid
+#SBATCH --error <user_path>/inference_workshop/%x_%j/error_%j.out  # File to which STDERR will be written, %j inserts jobid
 #SBATCH --nodes=1              # Total number of nodes
 #SBATCH --ntasks-per-node=2
 #SBATCH --gpus-per-node=4       # Allocate one gpu per MPI rank
