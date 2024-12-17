@@ -9,7 +9,7 @@
 #SBATCH --cpus-per-task=16
 #SBATCH --time=3:00:00
 #SBATCH --mem-per-cpu=32G
-#SBATCH --partition=kempner_h100
+#SBATCH --partition=gpu_requeue
 
 module load python/3.10.13-fasrc01
 conda deactivate
@@ -52,9 +52,11 @@ done
 
 export RAY_ADDRESS="$RAY_HEAD_ADDR"
 
-srun -N 1 -n 1 -w "$head_node" --gpus-per-node=0 bash -c "python offline.py --model-path=/n/netscratch/kempner_dev/Everyone/models/Llama-3.1-70B \
+MODEL_PATH=/n/netscratch/kempner_dev/Everyone/models/Llama-3.1-70B
+
+srun -N 1 -n 1 -w "$head_node" --gpus-per-node=0 bash -c "python offline.py --model-path=$MODEL_PATH \
     --input-file=offline_input.json --output-file=offline_output.json --num-threads=20 ; scancel $SLURM_JOB_ID" &
 
 echo "Starting vLLM server"
 
-vllm serve /n/netscratch/kempner_dev/Everyone/models/Llama-3.1-70B --tensor-parallel-size 4
+vllm serve $MODEL_PATH --tensor-parallel-size 4
