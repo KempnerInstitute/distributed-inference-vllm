@@ -8,7 +8,7 @@
 #SBATCH --cpus-per-task=16
 #SBATCH --time=3:00:00
 #SBATCH --mem-per-cpu=32G
-#SBATCH --partition=gpu_requeue
+#SBATCH --reservation=kempner_workshop
 
 module load python/3.10.13-fasrc01
 conda deactivate
