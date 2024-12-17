@@ -9,7 +9,7 @@
 #SBATCH --exclusive
 #SBATCH --time=3:00:00
 #SBATCH --mem=0			# All memory on the node
-#SBATCH --partition=gpu_requeue
+#SBATCH --reservation=kempner_workshop
 
 module load python/3.10.13-fasrc01
 conda deactivate
