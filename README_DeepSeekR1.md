@@ -1,6 +1,6 @@
-# DeepSeek-R1 671B Reasoning Model
+# DeepSeek-R1
 
-DeepSeek-R1 671B ([Hugging Face Page](https://huggingface.co/deepseek-ai/DeepSeek-R1)) is a state-of-the-art large language model trained from scratch by DeepSeek-AI with a strong focus on advanced reasoning capabilities. This repository documents the deployment of DeepSeek-R1 671B using [vLLM](https://docs.vllm.ai/en/latest/index.html), leveraging **FP8** weights and optimized attention via FlashMLA to enable high-throughput inference on multi-GPU setups. Read about model architecture [here](https://pub.towardsai.net/deepseek-r1-model-architecture-853fefac7050).
+DeepSeek-R1 ([Hugging Face Page](https://huggingface.co/deepseek-ai/DeepSeek-R1)) with 671B parameters is a state-of-the-art large language model developed from scratch by DeepSeek-AI, emphasizing advanced reasoning capabilities. This repository documents the deployment of DeepSeek-R1 using [vLLM](https://docs.vllm.ai/en/latest/index.html), leveraging **FP8** weights and optimized attention via FlashMLA to enable high-throughput inference on multi-GPU setups. Read about model architecture [here](https://pub.towardsai.net/deepseek-r1-model-architecture-853fefac7050).
 
 Since an [NVIDIA H100 SXM GPU](https://www.nvidia.com/en-us/data-center/h100/) and an [NVIDIA H200 SXM GPU](https://www.nvidia.com/en-us/data-center/h200/) hold 80 GB and 141 GB of VRAM, respectively, this model is large enough to require a multi-GPU, multi-node setup.
 
@@ -8,7 +8,7 @@ We performed several experiments for the GPU VRAM memory requirements for this m
 
 ## Sample Deployment Specs
 
-- **Model**: DeepSeek-R1 671B
+- **Model**: DeepSeek-R1
 - **Precision**: FP8
 - **Max Batched Tokens**: 57,344 tokens
 - **Max Number of Sequences**: 112
@@ -16,7 +16,7 @@ We performed several experiments for the GPU VRAM memory requirements for this m
 - **Maximum GPU Utilization Limit**: 90%
 - **GPUs**: 16 × NVIDIA H100 80GB (4-GPU Servers)
 
-The estimated memory breakdown with above specs are
+The estimated memory breakdown with the above specifications is as follows:
 
 | Component       | Usage      |
 |----------------|------------|
@@ -30,7 +30,7 @@ We also experimented with different values for maximum batched tokens and the ma
 
 ### Throughput Scaling: 16 × H100 80GB (FP8)
 
-| Max # of Sequences | Max Batched Tokens | Throughput (tokens/s) |
+| Maximum Number of Sequences | Maximum Batched Tokens | Throughput (tokens/s) |
 | ---------------- | -------------------------- | --------------------- |
 | 8                | 8192                       | 76                  |
 | 32               | 16384                      | 300                  |
@@ -47,14 +47,25 @@ We also experimented with different values for maximum batched tokens and the ma
 | 128               | 81920                      | 921                   |
 | 144               | 98304                      | 1022                  |
 
-By tuning the maximum number of sequences (`--max-num-seqs`) and the maximum number of batched tokens (`--max-num-batched-tokens`), we achieved up to 1030 tokens/sec throughput on both 16 × H100 or 8 × H200 GPU setups using the model's original FP8 weights. We specify both `--max-num-seqs` and `--max-num-batched-tokens` to explicitly control the maximum number of concurrent sequences and the total token budget per batch, ensuring efficient use of GPU memory and predictable throughput behavior during inference.
+We can specify both `--max-num-seqs` and `--max-num-batched-tokens` vLLM flags to explicitly control the maximum number of concurrent sequences and the total token budget per batch, ensuring efficient use of GPU memory and predictable throughput behavior during inference. Additionally, the `--max-model-len` flag can be used to cap the total token length per sequence (i.e., prompt + generation). Its upper bound is defined by the model's architecture, specifically, the `max_position_embeddings` field in the config, which for DeepSeek-R1 model is **163,840**.
 
 <div style="text-align: center;">
   <img src="figures/dsr1_throughput_scaling_h100_h200.png" alt="Throughput Scaling" style="width:60%;"><br>
-  <em>Figure 1: Throughput scaling with H100 and H200 GPUs.</em>
+  <em>Figure 1: Throughput scaling on H100 and H200 with tuned batch and sequence limits.</em>
 </div>
 
-Although both H100 and H200 configurations achieved similar peak throughput (~1030 tokens/sec), the H200 setup required nearly double the batch size to do so, highlighting its larger memory footprint and potential for scaling to higher context lengths or concurrent requests.
+Although both GPUs achieved similar peak throughput, the H200 setup required nearly double the batch size to do so, highlighting its larger memory footprint and potential for scaling to higher context lengths or concurrent requests.
+
+## Maximizing Throughput with Minimal vLLM Flags
+
+We also tested throughput using the default vLLM batching behavior (no `--max-num-seq`, `--max-num-batched-tokens`, and  `--max-model-len` flags). This configuration yields much higher generation throughput, especially at large prompt concurrency due to vLLM's dynamic scheduler and block manager optimizations.
+
+<div align="center"> <img src="figures/dsr1_throughput_scaling_default.png" alt="Default vLLM Throughput Scaling" width="60%"><br>
+<em>Figure 2: Throughput scaling with default vLLM batching behavior.</em> 
+</div>
+
+The throughput scales almost linearly with the number of sequences in the prompt batch and saturates around 1024 sequences. This sets the maximum throughput at **5,836 tokens/sec**.
+
 
 By following the instructions below, one should be able to set up a server running on a SLURM job for use with other experiments.
 
@@ -73,13 +84,13 @@ By following the instructions below, one should be able to set up a server runni
     pip install -r requirements.txt
     ```
 
-    > Since we want to use the FlashInfer library ([GitHub](https://github.com/flashinfer-ai/flashinfer)), we need to install a specific version of vLLM that is compatible with Torch 2.6.0 (CUDA 12.4).
+    > Since the FlashInfer library ([GitHub](https://github.com/flashinfer-ai/flashinfer)) is used, a specific version of vLLM that is compatible with Torch 2.6.0 (CUDA 12.4) is installed.
 
 1. Set parameters in the SLURM scripts (H100 or H200 GPUs).
   
-    Find the SLURM scripts in the `server/` directory,
+    Find the SLURM scripts in the `server/` directory.
 
-    16 H100 GPUs:
+    For 16 x H100 GPUs:
     ```sh
     #SBATCH --job-name=<job_name>
     #SBATCH --partition=<partition-name>
@@ -96,7 +107,7 @@ By following the instructions below, one should be able to set up a server runni
     #SBATCH -e job.%N.%j.err
     ```
 
-   8 H200 GPUs (required changes):
+   For 8 x H200 GPUs (required changes):
     ```sh
     #SBATCH --partition=<partition-name>
     #SBATCH --nodes=2                
@@ -105,59 +116,59 @@ By following the instructions below, one should be able to set up a server runni
 
 1. Set vLLM parameters.
 
-```sh
-vllm serve $MODEL_PATH \
-  --tensor-parallel-size $((SLURM_NNODES * SLURM_GPUS_ON_NODE)) \
-  --max-num-seqs 112 \
-  --max-num-batched-tokens 57344 \
-  --gpu-memory-utilization 0.9 \
-  --trust-remote-code \
-  --enable-reasoning \
-  --enforce-eager \
-  --reasoning-parser deepseek_r1 \
-  --distributed-executor-backend ray \
-  --port 8000
-```
+   The vLLM command with minimal flags is shown below.
 
-The following table summarizes the key parameters used in the vLLM command above.
+   ```sh
+   vllm serve $MODEL_PATH \
+     --tensor-parallel-size $((SLURM_NNODES * SLURM_GPUS_ON_NODE)) \
+     --enable-reasoning \
+     --reasoning-parser deepseek_r1 \
+     --trust-remote-code \
+     --enforce-eager
+   ```
 
-| Parameter | Description |
-|-----------|-------------|
-| `--tensor-parallel-size`       | Specifies the number of tensor parallel replicas.               |
-| `--max-num-seqs`               | Maximum number of sequences.         |
-| `--max-num-batched-tokens`     | Maximum number of tokens processed per iteration.                                   |
-| `--gpu-memory-utilization`     | Fraction of GPU memory to be used by vLLM.                                           |
-| `--trust-remote-code`          | Allows execution of custom code from remote repositories.                                 |
-| `--enable-reasoning`           | Enables reasoning capabilities in vLLM.             |
-| `--reasoning-parser`           | Specifies the reasoning parser to use.                                                                          |
-| `--distributed-executor-backend` | Sets the backend for distributed execution.                                                  |
-| `--port`                       | Pport on which vLLM server will listen for incoming requests.                               |
+   You can configure the throughput and concurrency behavior using the following additional flags.
+
+   ```sh
+   # Use case: high-throughput and low-context reasoning tasks
+   --max-num-seqs 112
+   --max-model-len 2048
+   --max-num-batched-tokens 57344
+   --gpu-memory-utilization 0.9
+   ```
 
 
-5. Run the SLURM script for the DeepSeek-R1 model.
+   The following table summarizes the key parameters used in the vLLM.
 
-    If you want to run the DeepSeek-R1 671B model on 16 x H100 80GB GPUs or 8 x H200 141GB GPUs, you should run the following command,
+   | Parameter | Description |
+   |-----------|-------------|
+   | `--tensor-parallel-size`       | Specifies the number of tensor parallel replicas.               |
+   | `--max-num-seqs`               | Maximum number of sequences.         |
+   | `--max-model-len`               | Maximum number of tokens allowed per input sequence.         |
+   | `--max-num-batched-tokens`     | Maximum number of tokens processed per iteration.                                   |
+   | `--gpu-memory-utilization`     | Fraction of GPU memory to be used by vLLM.                                           |
+   | `--trust-remote-code`          | Allows execution of custom code from remote repositories.                                 |
+   | `--enable-reasoning`           | Enables reasoning capabilities in vLLM.             |
+   | `--reasoning-parser`           | Specifies the reasoning parser to use.                                                                          |
+   | `--distributed-executor-backend` | Sets the backend for distributed execution.                                                  |
+   | `--port`                       | Port on which vLLM server will listen for incoming requests.                               |
 
-    ```bash
-    sbatch server/deepseek_r1_h100_slurm.sh    # 16 x H100
-    sbatch server/deepseek_r1_h200_slurm.sh    # 8 x H200
-    ```
 
-   Loading the model onto GPUs can take some time—up to 30–40 minutes on Lustre storage and around 20 minutes on VAST scratch storage. Repeated runs on VAST scratch storage can lead to a ~50–60 second speedup, thanks to VAST caching.
+1. Run the SLURM script for the DeepSeek-R1 model.
 
-    You can check the progress of the model loading by looking at the error logs for the SLURM job, which should have lines like
+   If you want to run the DeepSeek-R1 model on 16 x H100 80GB GPUs or 8 x H200 141GB GPUs, you should run the following command,
 
-    ```
-    Loading safetensors checkpoint shards:   1% Completed | 1/163 [00:06<18:37,  6.90s/it]
-    Loading safetensors checkpoint shards:   1% Completed | 2/163 [00:12<16:51,  6.28s/it]
-    Loading safetensors checkpoint shards:   2% Completed | 3/163 [00:18<16:13,  6.09s/it]
-    ```
+   ```bash
+   sbatch server/deepseek_r1_h100_slurm.sh    # 16 x H100
+   sbatch server/deepseek_r1_h200_slurm.sh    # 8 x H200
+   ```
+   Loading the model onto GPUs can take some time, up to 30–40 minutes on Lustre storage and around 20 minutes on VAST scratch storage. Repeated runs on VAST scratch storage can lead to a ~50–60 second speedup, thanks to VAST caching.
 
-    When the model is fully loaded and the server is ready to handle requests, you should see lines like
+   When the model is fully loaded and the server is ready to handle requests, you should see lines like
 
-    ```
+   ```
     INFO:     Starting vLLM API server on http://0.0.0.0:8000
-    ```
+   ```
 
 ## Using the vLLM Server
 
@@ -171,28 +182,29 @@ The server will then be running on `localhost:8000` on the head node. You can se
 
 ### Single Prompt
 
-Use the following `curl` or Python code snippet to send a single prompt. 
+Use the following `curl` or Python code snippet to send a single prompt and return both response and reasoning content.  
 
 ```sh
-curl -sS http://holygpu8a13402.rc:8000/v1/chat/completions \
+curl -sS http://<hostname>:8000/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
     "model": "/n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/DeepSeek-R1",
     "messages": [
-      {
-        "role": "system",
+       {
+        "role": "system", 
         "content": "You are a helpful and knowledgeable assistant. Answer concisely and clearly using academic language."
-      },
-      {
-        "role": "user",
+        },
+       {
+        "role": "user", 
         "content": "Explain gravitational wave in detail."
-      }
-    ]
-}' | jq -r '.choices[0].message.content'
+        }
+     ]
+   }' | jq -r '.choices[0].message | {reasoning: .reasoning_content, final: .content}'
 ```
-Note that the `model` field for the JSON needs to be the directory of the model being served.
 
-- DeepSeek-R1 671B: `/n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/DeepSeek-R1`
+Note that the `model` field for the JSON needs to be the directory of the model being served. Change `<hostname>` to hostname to the head node (e.g., `holygpu8a11203`) or localhost (if running inside head node). 
+
+- DeepSeek-R1: `/n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/DeepSeek-R1`
 
 For Python applications, you can use the `requests` library to send your HTTP requests.
 
@@ -200,34 +212,50 @@ For Python applications, you can use the `requests` library to send your HTTP re
 import requests
 
 res = requests.post(
-    "http://holygpu8a13402.rc:8000/v1/chat/completions",
+    "http://<hostname>:8000/v1/chat/completions",
     json={
-        "model": "/n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/DeepSeek-R1": [
-            {"role": "system", "content": "You are a helpful and knowledgeable assistant. Answer concisely and clearly using academic language."},
-            {"role": "user", "content": "Explain gravitational wave in detail."}
+        "model": "/n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/DeepSeek-R1",
+        "messages": [
+            {
+              "role": "system", 
+              "content": "You are a helpful and knowledgeable assistant. Answer concisely and clearly using academic language."
+              },
+            {
+              "role": "user", 
+              "content": "Explain gravitational wave in detail."
+              }
         ]
     }
 )
 
 data = res.json()
-print(data['choices'][0]['message']['content'])
+msg = data['choices'][0]['message']
+
+print("Reasoning:", msg.get('reasoning_content', '[No reasoning_content found]'))
+print("Final:", msg['content'])
 ```
 
 ### Batches of Prompts
 
-Use the following command to send batches of prompts for maximum throughput testing. Modify it to include your own prompts.
+Use the following command to send batches of prompts for maximum throughput testing.
 
 ```sh
-for i in {1..112}; do
-  curl -sS http://holygpu8a13402.rc:8000/v1/chat/completions \
+for i in {1..128}; do
+  curl -sS http://<hostname>:8000/v1/chat/completions \
     -H "Content-Type: application/json" \
     -d '{
       "model": "/n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/DeepSeek-R1",
       "messages": [
-        {"role": "system", "content": "You are a helpful and knowledgeable assistant."},
-        {"role": "user", "content": "Explain gravitational wave in detail."}
+        {
+        "role": "system", 
+        "content": "You are a helpful and knowledgeable assistant."
+        },
+        {
+        "role": "user", 
+        "content": "Explain gravitational wave in detail."
+        }
       ]
-    }' &
+    }' | jq -r '.choices[0].message | {reasoning: .reasoning_content, final: .content}' &
 done
 wait
 ```
@@ -241,7 +269,7 @@ To send batches of unique prompts in Python, use following files in `/scripts` f
 The script uses the following configuration variables to control batching behavior and connection to the vLLM server:
 
 - **`MAX_SEQS_PER_BATCH`**  
-  The maximum number of concurrent prompts in a single batch and should match the `--max-num-seqs` parameter in the vLLM server.
+  The maximum number of concurrent prompts in a single batch and should match the `--max-num-seqs` parameter or default value (e.g., 1024) in the vLLM server.
 
 - **`REQUEST_TIMEOUT`**  
   The maximum time (in seconds) to wait for a response from the server for each request.
@@ -260,5 +288,3 @@ Run your code
 python batch_prompt_sender.py
 
 ```
-
-Additional arguments are also available for adjusting how tokens are sampled. See the [vLLM docs](https://docs.vllm.ai/en/v0.4.1/models/engine_args.html) for the available arguments.

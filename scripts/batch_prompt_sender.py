@@ -11,9 +11,9 @@ import json
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # Configuration
-MAX_SEQS_PER_BATCH = 112  # Set this to match --max-num-seqs in vLLM command
+MAX_SEQS_PER_BATCH = 112  # Set this to match --max-num-seqs or vLLM default (e.g., 1024)
 REQUEST_TIMEOUT = 600     # 10 minutes
-API_URL = "http://holygpu8a13402.rc:8000/v1/chat/completions"
+API_URL = "http://<hostname>:8000/v1/chat/completions"  # Change <hostname> to vLLM head node e.g., holygpu8a13402
 MODEL_PATH = "/n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/DeepSeek-R1"
 
 # Load input prompts
@@ -37,9 +37,16 @@ def send_prompt(item):
     try:
         res = requests.post(API_URL, json=payload, timeout=REQUEST_TIMEOUT)
         res.raise_for_status()
-        answer = res.json()["choices"][0]["message"]["content"]
+        msg = res.json()["choices"][0]["message"]
+        answer = {
+            "reasoning": msg.get("reasoning_content", "[no reasoning_content]"),
+            "final": msg.get("content", "[no content]")
+        }
     except Exception as e:
-        answer = f"[ERROR] {str(e)}"
+        answer = {
+            "reasoning": "[ERROR]",
+            "final": f"[ERROR] {str(e)}"
+        }
     return {
         "question_tag": item["question_tag"],
         "response": answer

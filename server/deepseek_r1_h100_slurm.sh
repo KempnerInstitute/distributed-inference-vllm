@@ -68,12 +68,15 @@ export LOGLEVEL=DEBUG
 # Run vLLM with DeepSeek-R1 671B model
 vllm serve $MODEL_PATH \
   --tensor-parallel-size $((SLURM_NNODES * SLURM_GPUS_ON_NODE)) \
-  --max-num-seqs 112 \
-  --max-num-batched-tokens 57344 \
-  --gpu-memory-utilization 0.9 \
-  --trust-remote-code \
   --enable-reasoning \
-  --enforce-eager \
   --reasoning-parser deepseek_r1 \
-  --distributed-executor-backend ray \
-  --port 8000
+  --trust-remote-code \
+  --enforce-eager
+
+# Additional flags to fine-tune throughput and concurrency
+#   --max-num-seqs 112 \
+#   --max-model-len 2048 \
+#   --max-num-batched-tokens 57344 \
+#   --gpu-memory-utilization 0.9 \
+#   --distributed-executor-backend ray \
+#   --port 8000
