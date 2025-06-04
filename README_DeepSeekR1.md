@@ -82,8 +82,8 @@ By following the instructions below, one should be able to set up a server runni
     pip install -r requirements.txt
     ```
 
-    > [!NOTE]  
-    > Since the FlashInfer library ([GitHub](https://github.com/flashinfer-ai/flashinfer)) is used, a specific version of vLLM that is compatible with Torch 2.6.0 (CUDA 12.4) is installed.
+> [!NOTE]  
+> Since the FlashInfer library ([GitHub](https://github.com/flashinfer-ai/flashinfer)) is used, a specific version of vLLM that is compatible with Torch 2.6.0 (CUDA 12.4) is installed.
 
 1. Set parameters in the SLURM scripts (H100 or H200 GPUs).
   
@@ -162,11 +162,11 @@ By following the instructions below, one should be able to set up a server runni
    ```
    Loading the model onto GPUs can take some time, up to 30–40 minutes on Lustre storage and around 20 minutes on VAST scratch storage. Repeated runs on VAST scratch storage can lead to a ~50–60 second speedup, thanks to VAST caching.
 
-   > [!TIP]
-   > When the model is fully loaded and the server is ready to handle requests, you should see lines like
-   > ```
-   > INFO:     Starting vLLM API server on http://0.0.0.0:8000
-   > ```
+> [!TIP]
+> When the model is fully loaded and the server is ready to handle requests, you should see lines like
+> ```
+> INFO:     Starting vLLM API server on http://0.0.0.0:8000
+> ```
 
 ## Using the vLLM Server
 
