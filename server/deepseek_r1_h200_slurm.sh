@@ -13,14 +13,14 @@
 #SBATCH -o job.%N.%j.out                # Output file
 #SBATCH -e job.%N.%j.err                # Error file
 
-# Run vLLM with DeepSeek-R1
+# Load modules and activate conda environment
 module load python/3.10.13-fasrc01
 conda deactivate
 conda activate vllm-inference
 
 # Set model path (FileSystem: Lustre, # of stripes: 16)
 # Use VAST storage for faster caching in repetitive runs
-MODEL_PATH="/n/netscratch/kempner_dev/Lab/mmsh/DeepSeek-R1"
+MODEL_PATH="/n/holylfs06/LABS/kempner_shared/Everyone/testbed/models/DeepSeek-R1"
 
 # Setup Ray GPU config
 if [[ -z $SLURM_GPUS_ON_NODE ]]; then
@@ -44,7 +44,7 @@ echo "Head port: $head_port"
 # Export Ray head address
 export RAY_HEAD_ADDR="$head_node_ip:$head_port"
 
-# Start Ray head
+# Start Ray head node
 echo "Starting Ray head on $head_node"
 srun -N 1 -n 1 -w "$head_node" ray start --head --node-ip-address="$head_node_ip" --temp-dir /tmp/$USER/$SLURM_JOB_ID/ray \
     --port=$head_port --num-cpus $SLURM_CPUS_PER_TASK --num-gpus $RAY_NUM_GPUS --min-worker-port 20001 --max-worker-port 30000 --block &

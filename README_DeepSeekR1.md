@@ -10,19 +10,19 @@ We performed several experiments for the GPU VRAM memory requirements for this m
 
 - **Model**: DeepSeek-R1
 - **Precision**: FP8
-- **Max Batched Tokens**: 57,344 tokens
+- **Max Batched Tokens**: 57,344 tokens (fill ~90% of GPUs memory with maximum concurrency)
 - **Max Number of Sequences**: 112
-- **VRAM Used**: 1,037 GB (81% of 1.28 TB)
+- **VRAM Used**: 1,037 GB (81% of 16xH100 80GB VRAM - total of 1.28 TB VRAM)
 - **Maximum GPU Utilization Limit**: 90%
 - **GPUs**: 16 × NVIDIA H100 80GB (4-GPU Servers)
 
 The estimated memory breakdown with the above specifications is as follows:
 
-| Component       | Usage      |
-|----------------|------------|
-| Model Weights  | 671 GB    |
-| KV Cache       | 366 GB    |
-| **Total GPU VRAM** | 1,037 GB  |
+| Component          | Usage         |
+|--------------------|---------------|
+| Model Weights      | 671 GB        |
+| KV Cache           | 366 GB        |
+| **Total GPU VRAM** | 1,037 GB      |
 
 This configuration supports total batched tokens up to 57,344 long and fits within the 90% VRAM limit on 16 × H100 GPUs.
 
@@ -30,27 +30,26 @@ We also experimented with different values for maximum batched tokens and the ma
 
 ### Throughput Scaling: 16 × H100 80GB (FP8)
 
-| Maximum Number of Sequences | Maximum Batched Tokens | Throughput (tokens/s) |
-| ---------------- | -------------------------- | --------------------- |
-| 8                | 8192                       | 76                  |
-| 32               | 16384                      | 300                  |
-| 48               | 24576                      | 446                   |
-| 64               | 32768                      | 607                   |
-| 96               | 49152                      | 902                   |
-| 112              | 57344                      | 1030                  |
+| Maximum Number of Sequences | Maximum Batched Tokens     | Throughput (tokens/s) |
+|-----------------------------|----------------------------|-----------------------|
+| 8                           | 8192                       | 76                    |
+| 32                          | 16384                      | 300                   |
+| 48                          | 24576                      | 446                   |
+| 64                          | 32768                      | 607                   |
+| 96                          | 49152                      | 902                   |
+| 112                         | 57344                      | 1030                  |
 
 ### Throughput Scaling: 8 × H200 141GB (FP8)
 
-| Max # of Sequences  |  Max Batched Tokens | Throughput (tokens/s) |
-| ----------------- | -------------------------- | --------------------  |
-| 96                | 65536                      | 690                   |
-| 128               | 81920                      | 921                   |
-| 144               | 98304                      | 1022                  |
+| Max # of Sequences  |  Max Batched Tokens        | Throughput (tokens/s) |
+| --------------------|----------------------------|-----------------------|
+| 96                  | 65536                      | 690                   |
+| 128                 | 81920                      | 921                   |
+| 144                 | 98304                      | 1022                  |
 
 We can specify both `--max-num-seqs` and `--max-num-batched-tokens` vLLM flags to explicitly control the maximum number of concurrent sequences and the total token budget per batch, ensuring efficient use of GPU memory and predictable throughput behavior during inference. Additionally, the `--max-model-len` flag can be used to cap the total token length per sequence (i.e., prompt + generation). Its upper bound is defined by the model's architecture, specifically, the `max_position_embeddings` field in the config, which for DeepSeek-R1 model is **163,840**.
 
-<div style="text-align: center;">
-  <img src="figures/dsr1_throughput_scaling_h100_h200.png" alt="Throughput Scaling" style="width:60%;"><br>
+<div align="center"> <img src="figures/png/dsr1_throughput_scaling_h100_h200.png" alt="Throughput Scaling" width="60%"><br>
   <em>Figure 1: Throughput scaling on H100 and H200 with tuned batch and sequence limits.</em>
 </div>
 
@@ -60,12 +59,11 @@ Although both GPUs achieved similar peak throughput, the H200 setup required nea
 
 We also tested throughput using the default vLLM batching behavior (no `--max-num-seq`, `--max-num-batched-tokens`, and  `--max-model-len` flags). This configuration yields much higher generation throughput, especially at large prompt concurrency due to vLLM's dynamic scheduler and block manager optimizations.
 
-<div align="center"> <img src="figures/dsr1_throughput_scaling_default.png" alt="Default vLLM Throughput Scaling" width="60%"><br>
+<div align="center"> <img src="figures/png/dsr1_throughput_scaling_default.png" alt="Default vLLM Throughput Scaling" width="60%"><br>
 <em>Figure 2: Throughput scaling with default vLLM batching behavior.</em> 
 </div>
 
 The throughput scales almost linearly with the number of sequences in the prompt batch and saturates around 1024 sequences. This sets the maximum throughput at **5,836 tokens/sec**.
-
 
 By following the instructions below, one should be able to set up a server running on a SLURM job for use with other experiments.
 
@@ -84,6 +82,7 @@ By following the instructions below, one should be able to set up a server runni
     pip install -r requirements.txt
     ```
 
+    > [!NOTE]  
     > Since the FlashInfer library ([GitHub](https://github.com/flashinfer-ai/flashinfer)) is used, a specific version of vLLM that is compatible with Torch 2.6.0 (CUDA 12.4) is installed.
 
 1. Set parameters in the SLURM scripts (H100 or H200 GPUs).
@@ -137,21 +136,20 @@ By following the instructions below, one should be able to set up a server runni
    --gpu-memory-utilization 0.9
    ```
 
-
    The following table summarizes the key parameters used in the vLLM.
 
-   | Parameter | Description |
-   |-----------|-------------|
-   | `--tensor-parallel-size`       | Specifies the number of tensor parallel replicas.               |
-   | `--max-num-seqs`               | Maximum number of sequences.         |
-   | `--max-model-len`               | Maximum number of tokens allowed per input sequence.         |
-   | `--max-num-batched-tokens`     | Maximum number of tokens processed per iteration.                                   |
-   | `--gpu-memory-utilization`     | Fraction of GPU memory to be used by vLLM.                                           |
-   | `--trust-remote-code`          | Allows execution of custom code from remote repositories.                                 |
-   | `--enable-reasoning`           | Enables reasoning capabilities in vLLM.             |
-   | `--reasoning-parser`           | Specifies the reasoning parser to use.                                                                          |
-   | `--distributed-executor-backend` | Sets the backend for distributed execution.                                                  |
-   | `--port`                       | Port on which vLLM server will listen for incoming requests.                               |
+   | Parameter                        | Description                                                    |
+   |----------------------------------|----------------------------------------------------------------|
+   | `--tensor-parallel-size`         | Specifies the number of tensor parallel replicas.              |
+   | `--max-num-seqs`                 | Maximum number of sequences.                                   |
+   | `--max-model-len`                | Maximum number of tokens allowed per input sequence.           |
+   | `--max-num-batched-tokens`       | Maximum number of tokens processed per iteration.              |
+   | `--gpu-memory-utilization`       | Fraction of GPU memory to be used by vLLM.                     |
+   | `--trust-remote-code`            | Allows execution of custom code from remote repositories.      |
+   | `--enable-reasoning`             | Enables reasoning capabilities in vLLM.                        |
+   | `--reasoning-parser`             | Specifies the reasoning parser to use.                         |
+   | `--distributed-executor-backend` | Sets the backend for distributed execution.                    |
+   | `--port`                         | Port on which vLLM server will listen for incoming requests.   |
 
 
 1. Run the SLURM script for the DeepSeek-R1 model.
@@ -164,11 +162,11 @@ By following the instructions below, one should be able to set up a server runni
    ```
    Loading the model onto GPUs can take some time, up to 30–40 minutes on Lustre storage and around 20 minutes on VAST scratch storage. Repeated runs on VAST scratch storage can lead to a ~50–60 second speedup, thanks to VAST caching.
 
-   When the model is fully loaded and the server is ready to handle requests, you should see lines like
-
-   ```
-    INFO:     Starting vLLM API server on http://0.0.0.0:8000
-   ```
+   > [!TIP]
+   > When the model is fully loaded and the server is ready to handle requests, you should see lines like
+   > ```
+   > INFO:     Starting vLLM API server on http://0.0.0.0:8000
+   > ```
 
 ## Using the vLLM Server
 

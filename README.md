@@ -13,4 +13,5 @@ Follow the instruction page for each models to deploy them on an AI cluster.
 | DeepSeek-R1 | 671B | [HF Link](https://huggingface.co/deepseek-ai/DeepSeek-R1) | [Link](README_DeepSeekR1.md) |
 
 
-> **Note:** Follow this repository for regular updates on deployment instructions for the latest models on AI clusters.
+> [!NOTE]
+> Follow this repository for regular updates on deployment instructions for the latest models on AI clusters.
