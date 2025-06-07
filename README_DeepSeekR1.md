@@ -82,9 +82,6 @@ By following the instructions below, one should be able to set up a server runni
     pip install -r requirements.txt
     ```
 
-> [!NOTE]  
-> Since the FlashInfer library ([GitHub](https://github.com/flashinfer-ai/flashinfer)) is used, a specific version of vLLM that is compatible with Torch 2.6.0 (CUDA 12.4) is installed.
-
 1. Set parameters in the SLURM scripts (H100 or H200 GPUs).
   
     Find the SLURM scripts in the `server/` directory.

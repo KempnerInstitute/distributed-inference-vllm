@@ -6,7 +6,3 @@ torchaudio==2.6.0
 
 # vLLM
 vllm==0.8.5.post1
-
-# FlashInfer
---extra-index-url https://flashinfer.ai/whl/cu124/torch2.6/
-flashinfer-python
