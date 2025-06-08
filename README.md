@@ -6,11 +6,12 @@ This repository explains how to run inference on the following models across mul
 
 Follow the instruction page for each models to deploy them on an AI cluster.
 
-| Model           | Model Size | Huggine Face | Instruction Page
-|----------------|------------|------------------------------------------|-----------------|
-| Llama 3.1 | 70B | [HF Link](https://huggingface.co/meta-llama/Llama-3.1-70B) | [Link](README_Llama3.1.md) |
-| Llama 3.1 | 405B | [HF Link](https://huggingface.co/meta-llama/Llama-3.1-405B) | [Link](README_Llama3.1.md) |
-| DeepSeek-R1 | 671B | [HF Link](https://huggingface.co/deepseek-ai/DeepSeek-R1) | [Link](README_DeepSeekR1.md) |
+| Model            | Model Size | Huggine Face                                                     | Instruction Page                  |
+|------------------|------------|------------------------------------------------------------------|-----------------------------------|
+| Llama 3.1        | 70B        | [HF Link](https://huggingface.co/meta-llama/Llama-3.1-70B)       | [Link](README_Llama3.1.md)        |
+| Llama 3.1        | 405B       | [HF Link](https://huggingface.co/meta-llama/Llama-3.1-405B)      | [Link](README_Llama3.1.md)        |
+| DeepSeek-R1      | 671B       | [HF Link](https://huggingface.co/deepseek-ai/DeepSeek-R1)        | [Link](README_DeepSeekR1.md)      |
+| DeepSeek-R1-0528 | 671B       | [HF Link](https://huggingface.co/deepseek-ai/DeepSeek-R1-0528)   | [Link](README_DeepSeekR1-0528.md) |
 
 
 > [!NOTE]
