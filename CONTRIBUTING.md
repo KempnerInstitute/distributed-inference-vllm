@@ -163,7 +163,7 @@ Include the appropriate files for your environment type:
 
 Every environment folder **must** include a `README.md` with:
 
-```markdown
+~~~markdown
 # [Environment Name]
 
 ## Overview
@@ -205,7 +205,7 @@ List any prerequisites (e.g., CUDA drivers, specific OS)
 - Created by: [Name]
 - Date: [YYYY-MM-DD]
 - Last updated: [YYYY-MM-DD]
-```
+~~~
 
 ### Environment Versioning
 
@@ -224,10 +224,10 @@ Create a **new environment** with a new date:
 
 Document the relationship in the README:
 
-```markdown
+~~~markdown
 ## History
 This environment supersedes `c20260303_vllm` with updated vLLM version.
-```
+~~~
 
 ---
 
@@ -429,17 +429,17 @@ r<date>_<short-description>
 
 **Examples:**
 ```
-r20260303_llama3.1-405b_multinode-throughput
-r20260315_deepseek-r1_scaling-analysis
-r20260320_vllm-performance-comparison
+r260303_llama3.1-405b_multinode-throughput
+r260315_deepseek-r1_scaling-analysis
+r260320_vllm-performance-comparison
 ```
 
-**Date format:** YYYYMMDD (date the study was initiated or completed)
+**Date format:** YYMMDD (date the study was initiated or completed)
 
 **Step 2: Create Directory Structure**
 
 ```
-r20260303_llama3.1-405b_multinode-throughput/
+r260303_llama3.1-405b_multinode-throughput/
   README.md
   figures/
   code/
@@ -449,7 +449,7 @@ r20260303_llama3.1-405b_multinode-throughput/
 
 Every report **must** include a comprehensive `README.md`:
 
-```markdown
+~~~markdown
 # [Report Title]
 
 ## Summary
@@ -583,6 +583,8 @@ All analysis and figure generation code is in the `code/` directory:
 - Date: [YYYY-MM-DD]
 - Last updated: [YYYY-MM-DD]
 
+~~~
+
 
 **Step 4: Add Code**
 
@@ -671,7 +673,7 @@ w260410_vllm-inference-workshop/
 
 **Step 3: Create Workshop README**
 
-```markdown
+~~~markdown
 # [Workshop Name]
 
 ## Overview
@@ -738,13 +740,13 @@ By the end of this workshop, participants will be able to:
 - Date: [YYYY-MM-DD]
 - Last updated: [YYYY-MM-DD]
 
-```
+~~~
 
 **Step 4: Create Agenda**
 
 Create `agenda.md` with a detailed schedule:
 
-```markdown
+~~~markdown
 # Workshop Agenda
 
 ## Morning Session (9:00 AM - 12:00 PM)
@@ -759,13 +761,13 @@ Create `agenda.md` with a detailed schedule:
 - Q&A
 
 [Continue with detailed timing and topics]
-```
+~~~
 
 **Step 5: Create Exercises**
 
 Create numbered exercise files in `exercises/`:
 
-```markdown
+~~~markdown
 # Exercise 1: Single GPU Inference
 
 ## Objective
@@ -798,7 +800,7 @@ Create numbered exercise files in `exercises/`:
 
 ## Next Steps
 [Link to next exercise]
-```
+~~~
 
 ---
 
@@ -891,7 +893,7 @@ if __name__ == "__main__":
 
 Add an entry to `utils/README.md`:
 
-```markdown
+~~~markdown
 ## benchmarking/benchmark_throughput.py
 
 **Purpose:** Measure inference throughput for vLLM servers.
@@ -918,7 +920,7 @@ python benchmarking/benchmark_throughput.py \
 **Used by:**
 - reports/r20260303_llama3.1-405b_multinode-throughput
 - workflows/Meta-Llama-3.1-405b_multinode-server
-```
+~~~
 
 ### Utility Script Best Practices
 
@@ -931,7 +933,7 @@ python benchmarking/benchmark_throughput.py \
 7. **Write docstrings for functions**
 8. **Handle exceptions gracefully**
 
----
+~~~
 
 ## Cross-Referencing Guidelines
 
@@ -942,19 +944,19 @@ Proper cross-referencing ensures traceability and reproducibility across the rep
 When referencing other repository content, use relative paths from the repository root.
 
 **Format:**
-```markdown
+~~~markdown
 Referenced resource:
 ```
 path/to/resource
 ```
 (commit: <commit-hash>)
-```
+~~~
 
 ### Workflows Referencing Environments
 
 **Required in every workflow README:**
 
-```markdown
+~~~markdown
 ## Environment
 
 **Environment used:**
@@ -966,13 +968,13 @@ envs/conda/c20260303_vllm
 ```
 a1b2c3d4e5f6g7h8i9j0
 ```
-```
+~~~
 
 ### Reports Referencing Workflows
 
 **Required in every report README:**
 
-```markdown
+~~~markdown
 ## Referenced Workflow(s)
 
 **Primary workflow:**
@@ -984,11 +986,11 @@ workflows/Meta-Llama-3.1-405b_multinode-server
 ```
 a1b2c3d4e5f6g7h8i9j0
 ```
-```
+~~~
 
 For multiple workflows:
 
-```markdown
+~~~markdown
 **Compared workflows:**
 1. `workflows/Llama-3.1-70b_tensor-parallel`
 2. `workflows/Llama-3.1-405b_multinode-server`
@@ -998,13 +1000,13 @@ For multiple workflows:
 ```
 a1b2c3d4e5f6g7h8i9j0
 ```
-```
+~~~
 
 ### Workshops Referencing Workflows
 
 **In workshop README:**
 
-```markdown
+~~~markdown
 ## Referenced Workflows
 
 This workshop uses the following workflows:
@@ -1023,13 +1025,13 @@ workflows/Meta-Llama-3.1-405b_multinode-server
 ```
 a1b2c3d4e5f6g7h8i9j0
 ```
-```
+~~~
 
 ### Workflows Referencing Utilities
 
 **In workflow README:**
 
-```markdown
+~~~markdown
 ## Utilities Used
 
 This workflow uses the following utilities:
@@ -1038,7 +1040,7 @@ This workflow uses the following utilities:
 utils/benchmarking/benchmark_throughput.py
 utils/monitoring/monitor_gpu.py
 ```
-```
+~~~
 
 ### Reports Referencing Utilities
 
@@ -1054,7 +1056,7 @@ utils/monitoring/monitor_gpu.py
 
 If a workflow builds on or extends another:
 
-```markdown
+~~~markdown
 ## Related Workflows
 
 This workflow extends:
@@ -1066,7 +1068,7 @@ workflows/Llama-3.1-70b_single-node
 - Increased tensor parallel size from 4 to 8
 - Modified memory utilization settings
 - Added custom sampling parameters
-```
+~~~
 
 ### Getting Commit Hashes
 
