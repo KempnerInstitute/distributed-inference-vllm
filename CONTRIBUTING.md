@@ -223,6 +223,7 @@ Create a **new environment** with a new date:
 - Example: `c20260303_vllm` → `c20260310_vllm`
 
 Document the relationship in the README:
+
 ```markdown
 ## History
 This environment supersedes `c20260303_vllm` with updated vLLM version.
@@ -259,6 +260,7 @@ Use this naming convention:
 ```
 
 **Examples:**
+
 ```
 Meta-Llama-3.1-405b_multinode-server
 DeepSeek-R1_single-node-inference
@@ -275,7 +277,7 @@ Llama-3.1-70b_tensor-parallel-benchmarking
 
 Every workflow **must** include a comprehensive `README.md`:
 
-```markdown
+~~~markdown
 # [Model Name] - [Scenario Description]
 
 ## Overview
@@ -284,6 +286,8 @@ Brief description of this workflow and its purpose.
 ## Environment
 
 **Environment used:**
+```
+
 ```
 envs/conda/c20260303_vllm
 ```
@@ -378,7 +382,7 @@ curl http://localhost:8000/v1/completions \
 - Created by: [Name]
 - Date: [YYYY-MM-DD]
 - Last updated: [YYYY-MM-DD]
-```
+~~~
 
 **Step 3: Add Figures (Optional)**
 
