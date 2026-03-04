@@ -1,0 +1,12 @@
+name: vllm-inference
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+      - torch==2.6.0
+      - torchvision==0.21.0
+      - torchaudio==2.6.0
+      - vllm==0.8.5.post1

@@ -12,7 +12,9 @@ This directory contains reproducible runtime environment definitions for executi
 
 ### Conda Environments
 
-*No conda environments available yet.*
+| Name | Python | vLLM | CUDA | Notes |
+|------|--------|------|------|-------|
+| [c250609_vllm085](conda/c250609_vllm085/) | 3.12 | 0.8.5.post1 | 12.4 | PyTorch 2.6.0 |
 
 ### Docker Environments
 

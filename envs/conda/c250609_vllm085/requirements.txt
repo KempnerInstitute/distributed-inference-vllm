@@ -1,0 +1,8 @@
+# PyTorch 2.6 + CUDA 12.4
+--extra-index-url https://download.pytorch.org/whl/cu124
+torch==2.6.0
+torchvision==0.21.0
+torchaudio==2.6.0
+
+# vLLM
+vllm==0.8.5.post1
