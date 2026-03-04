@@ -68,20 +68,8 @@ cd workflows/Qwen2.5-32B-Instruct_single-gpu-inference
 
 ## Available Resources
 
-### Environments
-**2 environments** available:
-- ✅ **uv**: [u260304_vllm](envs/uv/u260304_vllm/) - vLLM 0.11.2, CUDA 12.9
-- ✅ **conda**: [c250609_vllm085](envs/conda/c250609_vllm085/) - vLLM 0.8.5.post1, CUDA 12.4
-
-→ See [envs/README.md](envs/) for complete environment catalog
-
-### Workflows
-**3 workflows** available:
-- ✅ **Single-GPU**: Qwen2.5-32B-Instruct (32B params)
-- ✅ **Multi-Node**: DeepSeek-R1 (671B params, FP8, reasoning)
-- ✅ **Multi-Node**: DeepSeek-R1-0528 (671B params, FP8, enhanced reasoning)
-
-→ See [workflows/README.md](workflows/) for complete workflow catalog with specifications
+See [envs/README.md](envs/) for complete environment catalog
+See [workflows/README.md](workflows/) for complete workflow catalog with specifications
 
 ## Contributing
 
@@ -96,7 +84,7 @@ See [LICENSE](LICENSE) for details.
 - **2026-03-04**: Added DeepSeek-R1-0528 workflow - an upgraded version with enhanced math, programming, and logic reasoning. See [DeepSeek-R1-0528 workflow](workflows/DeepSeek-R1-0528_multinode-server/) for details.
 - **2026-03-04**: First uv environment ([u260304_vllm](envs/uv/u260304_vllm/)) and workflow ([Qwen2.5-32B-Instruct single-GPU inference](workflows/Qwen2.5-32B-Instruct_single-gpu-inference/)). Includes vLLM 0.11.2 with CUDA 12.9 support and comprehensive documentation following the new contribution guidelines.
 - **2025-06-09**: DeepSeek-R1 multi-node deployment. New conda environment ([c250609_vllm085](envs/conda/c250609_vllm085/)) with vLLM 0.8.5.post1 and comprehensive [workflow](workflows/DeepSeek-R1_multinode-server/) for deploying 671B parameter model with FP8 precision on 16×H100 or 8×H200 GPUs. Includes throughput benchmarks and SLURM scripts.
-
+- **2024-10-09**: Added Llama 3.1 workflows from Timothy Ngotiaoco and Max Shad. Two new workflows: [Llama 3.1 70B](workflows/Llama-3.1-70B_multinode-server/) (4×H100) and [Llama 3.1 405B](workflows/Llama-3.1-405B_multinode-server/) (16×H100) with 128k context length support.
 
 ---
 
