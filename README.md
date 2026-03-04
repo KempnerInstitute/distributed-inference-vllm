@@ -86,7 +86,7 @@ See [LICENSE](LICENSE) for details.
 - **2025-06-09**: DeepSeek-R1 multi-node deployment. New conda environment ([c250609_vllm085](envs/conda/c250609_vllm085/)) with vLLM 0.8.5.post1 and comprehensive [workflow](workflows/DeepSeek-R1_multinode-server/) for deploying 671B parameter model with FP8 precision on 16×H100 or 8×H200 GPUs. Includes throughput benchmarks and SLURM scripts.
 - **2024-10-09**: Added Llama 3.1 workflows from Timothy Ngotiaoco and Max Shad. Two new workflows: [Llama 3.1 70B](workflows/Llama-3.1-70B_multinode-server/) (4×H100) and [Llama 3.1 405B](workflows/Llama-3.1-405B_multinode-server/) (16×H100) with 128k context length support.
 
----
+
 
 <!-- 
 OLD README CONTENT - TO BE REMOVED
