@@ -4,6 +4,19 @@
 
 This workflow demonstrates deploying DeepSeek-R1, a 671B parameter large language model with advanced reasoning capabilities, using vLLM on multi-GPU, multi-node HPC clusters. The deployment uses FP8 precision with FlashMLA attention optimization for high-throughput inference across 16×H100 or 8×H200 GPUs.
 
+## Workflow Contents
+
+This workflow directory contains:
+
+| File | Purpose |
+|------|---------|
+| **README.md** | This comprehensive deployment guide |
+| **deepseek_r1_h100_slurm.sh** | SLURM script for 16×H100 80GB deployment |
+| **deepseek_r1_h200_slurm.sh** | SLURM script for 8×H200 141GB deployment |
+| **generate_fig_1.py** | Script to reproduce Figure 1 (H100 vs H200 throughput) |
+| **generate_fig_2.py** | Script to reproduce Figure 2 (default batching throughput) |
+| **figures/png/** | Performance visualization figures |
+
 ## Environment
 
 **Environment used:**
@@ -281,6 +294,13 @@ See [scripts/batch_prompt_sender.py](../../scripts/batch_prompt_sender.py) for b
 | 128                | 81920              | 921                   |
 | 144                | 98304              | 1022                  |
 
+<div align="center">
+  <img src="figures/png/dsr1_throughput_scaling_h100_h200.png" alt="Throughput Scaling" width="60%"><br>
+  <em>Figure 1: Throughput scaling on H100 and H200 with tuned batch and sequence limits.</em>
+</div>
+
+Although both GPUs achieved similar peak throughput, the H200 setup required nearly double the batch size to do so, highlighting its larger memory footprint and potential for scaling to higher context lengths or concurrent requests.
+
 ### Default vLLM Batching (No Limits)
 
 When using default vLLM batching without `--max-num-seqs` and `--max-num-batched-tokens`:
@@ -288,6 +308,29 @@ When using default vLLM batching without `--max-num-seqs` and `--max-num-batched
 - **Maximum throughput:** ~5,836 tokens/sec
 - **Optimal concurrency:** ~1024 sequences
 - Throughput scales almost linearly up to saturation point
+
+<div align="center">
+  <img src="figures/png/dsr1_throughput_scaling_default.png" alt="Default vLLM Throughput Scaling" width="60%"><br>
+  <em>Figure 2: Throughput scaling with default vLLM batching behavior.</em>
+</div>
+
+The throughput scales almost linearly with the number of sequences in the prompt batch and saturates around 1024 sequences. This configuration yields much higher generation throughput, especially at large prompt concurrency due to vLLM's dynamic scheduler and block manager optimizations.
+
+### Reproducing Performance Figures
+
+The performance figures shown above can be reproduced using the provided Python scripts:
+
+**Generate Figure 1** (H100 vs H200 throughput scaling):
+```bash
+python generate_fig_1.py
+```
+
+**Generate Figure 2** (Default vLLM batching throughput):
+```bash
+python generate_fig_2.py
+```
+
+Both scripts use matplotlib to create the visualizations and save them as PNG files. You can modify the data points in the scripts to reflect your own benchmarking results.
 
 ### Performance Tuning
 
