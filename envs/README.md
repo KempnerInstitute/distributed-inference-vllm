@@ -6,17 +6,9 @@ This directory contains reproducible runtime environment definitions for executi
 
 ### uv Environments
 
-#### [u260304_vllm](uv/u260304_vllm/)
-- **Python:** 3.12.11
-- **CUDA:** 12.9.1
-- **vLLM:** 0.11.2
-- **PyTorch:** 2.9.0+cu129
-- **Purpose:** Production-ready vLLM inference environment with CUDA 12.9 support
-- **Features:**
-  - Multi-GPU support with NCCL 2.27.5
-  - Memory-efficient attention (xformers, flashinfer)
-  - Comprehensive test scripts
-  - Quick setup options
+| Name | Python | vLLM | CUDA | Notes |
+|------|--------|------|------|-------|
+| [u260304_vllm](uv/u260304_vllm/) | 3.12.11 | 0.11.2 | 12.9.1 | Production-ready vLLM inference with PyTorch 2.9.0+cu129. Multi-GPU support (NCCL 2.27.5), memory-efficient attention (xformers, flashinfer), comprehensive test scripts |
 
 ### Conda Environments
 
