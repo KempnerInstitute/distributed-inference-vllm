@@ -1,0 +1,1363 @@
+# Contributing to Distributed Inference vLLM
+
+Thank you for your interest in contributing to this repository. This repository serves as executable documentation and a practical knowledge base for running vLLM inference workflows across different environments and configurations.
+
+The goal is to provide clear, reproducible recipes that enable users to:
+- Set up reproducible environments
+- Run inference workflows for specific models
+- Benchmark and evaluate performance
+- Learn through structured workshop materials
+
+This guide provides comprehensive instructions for contributing to the repository. Please read it carefully before making contributions.
+
+---
+
+## Table of Contents
+
+1. [Repository Philosophy](#repository-philosophy)
+2. [Repository Structure](#repository-structure)
+3. [Contributing Environments](#contributing-environments)
+4. [Contributing Workflows](#contributing-workflows)
+5. [Contributing Reports](#contributing-reports)
+6. [Contributing Workshops](#contributing-workshops)
+7. [Contributing Utilities](#contributing-utilities)
+8. [Cross-Referencing Guidelines](#cross-referencing-guidelines)
+9. [Git Workflow and Versioning](#git-workflow-and-versioning)
+10. [General Guidelines](#general-guidelines)
+
+---
+
+## Repository Philosophy
+
+### Core Principles
+
+**1. Reproducibility First**
+
+Every workflow and report must include:
+- Environment reference with exact path
+- Repository commit hash
+- Exact run commands
+- Hardware configuration
+
+This ensures other users can reproduce results exactly.
+
+**2. No Large Files**
+
+The repository should **never** contain:
+- Model weights
+- Large datasets
+- Extensive log files
+- Large generated outputs
+
+Instead, use external storage and provide links in documentation.
+
+**3. Executable Documentation**
+
+All documentation should be actionable. Users should be able to:
+- Copy commands directly
+- Follow step-by-step instructions
+- Reproduce results without guesswork
+- Although we are dedicated to provide detailed PR review and guidance to facilitate the contribution process, we encourage contributors to act proactively and take initiative to ensure their contributions are clear, complete, and reproducible before submission, or expect longer review cycles and more back-and-forth communication to get the contribution ready for merging.
+
+**4. Organic Growth**
+
+The repository is designed to grow over time. New contributions are encouraged:
+- New environments for different configurations
+- New workflows for different models
+- Benchmark reports
+- Training workshops
+
+Do not remove existing content. 
+
+**5. Clarity Over Brevity**
+
+Comprehensive documentation is preferred over short summaries. 
+
+---
+
+## Repository Structure
+
+The repository is organized around **five main directories**:
+
+```
+envs/        # Reproducible runtime environments
+workflows/   # Model inference recipes
+reports/     # Benchmarking and evaluation studies
+workshops/   # Training and educational material
+utils/       # Shared utilities and helper scripts
+```
+
+Each directory serves a distinct purpose, described in detail below.
+
+---
+
+## Contributing Environments
+
+### Purpose
+
+The `envs/` directory contains **reproducible runtime environment definitions** used to execute workflows.
+
+### Structure
+
+```
+envs/
+  README.md
+  conda/
+  docker/
+  uv/
+  singularity/
+```
+
+Each environment technology has its own subfolder.
+
+### Adding a New Environment
+
+**Step 1: Choose Environment Type**
+
+Select the appropriate subdirectory:
+- `conda/` - Conda environments
+- `docker/` - Docker containers
+- `uv/` - uv-based Python environments
+- `singularity/` - Singularity containers
+
+**Step 2: Create Environment Folder**
+
+Use this naming convention:
+
+```
+<type-prefix><date>_<short-description>
+```
+
+| Prefix | Environment Type |
+|--------|------------------|
+| c      | Conda            |
+| u      | uv               |
+| d      | Docker           |
+| s      | Singularity      |
+
+**Examples:**
+```
+c260303_vllm
+u260303_vllm
+d260303_cuda124
+s260303_vllm
+```
+
+**Date format:** `YYMMDD`
+
+**Step 3: Add Environment Definition Files**
+
+Include the appropriate files for your environment type:
+
+| Environment | Required Files |
+|-------------|----------------|
+| Conda       | `environment.yml` |
+| Docker      | `Dockerfile` |
+| uv          | `pyproject.toml`, `uv.lock` |
+| Singularity | `*.def` |
+
+**Step 4: Create Environment README**
+
+Every environment folder **must** include a `README.md` with:
+
+```markdown
+# [Environment Name]
+
+## Overview
+Brief description of this environment's purpose.
+
+## Specifications
+
+- **Python Version:** X.X.X
+- **CUDA Version:** X.X
+- **PyTorch Version:** X.X.X
+- **vLLM Version:** X.X.X
+- **Key Dependencies:**
+  - dependency1: version
+  - dependency2: version
+
+## Installation
+
+### Prerequisites
+List any prerequisites (e.g., CUDA drivers, specific OS)
+
+### Setup Instructions
+
+[Step-by-step instructions to create the environment]
+
+### Verification
+
+[Commands to verify the environment is correctly set up]
+
+## Usage
+
+[How to activate and use this environment]
+
+## Notes
+
+[Any important notes, known issues, or compatibility concerns]
+
+## Maintainer
+
+- Created by: [Name]
+- Date: [YYYY-MM-DD]
+- Last updated: [YYYY-MM-DD]
+```
+
+### Environment Versioning
+
+**For bug fixes or minor patches:**
+- Keep the same date
+- Append version suffix: `v0`, `v1`, `v2`, etc.
+- Example: `c20260303_vllm` → `c20260303_vllm_v1`
+
+**For environment changes:**
+- New dependencies added/removed
+- Version changes (Python, CUDA, PyTorch, vLLM)
+- Major configuration changes
+
+Create a **new environment** with a new date:
+- Example: `c20260303_vllm` → `c20260310_vllm`
+
+Document the relationship in the README:
+```markdown
+## History
+This environment supersedes `c20260303_vllm` with updated vLLM version.
+```
+
+---
+
+## Contributing Workflows
+
+### Purpose
+
+The `workflows/` directory contains **practical examples of running inference workflows** using vLLM.
+
+Each workflow represents a **specific model + scenario**.
+
+### Structure
+
+```
+workflows/
+  README.md
+  <Model-Name>_<scenario-description>/
+    README.md
+    figures/
+```
+
+### Adding a New Workflow
+
+**Step 1: Create Workflow Directory**
+
+Use this naming convention:
+
+```
+<Model-Name>_<scenario-description>
+```
+
+**Examples:**
+```
+Meta-Llama-3.1-405b_multinode-server
+DeepSeek-R1_single-node-inference
+Llama-3.1-70b_tensor-parallel-benchmarking
+```
+
+**Guidelines:**
+- Use the official model name (hyphens, not underscores)
+- Use descriptive scenario names separated by hyphens
+- Use lowercase for scenario descriptions
+- Be specific about the use case
+
+**Step 2: Create Workflow README**
+
+Every workflow **must** include a comprehensive `README.md`:
+
+```markdown
+# [Model Name] - [Scenario Description]
+
+## Overview
+Brief description of this workflow and its purpose.
+
+## Environment
+
+**Environment used:**
+```
+envs/conda/c20260303_vllm
+```
+
+**Repository commit:**
+```
+<commit-hash>
+```
+
+## Model Information
+
+**Model:** [Full model name]
+
+**HuggingFace Link:** [URL]
+
+**Model Size:** [e.g., 405B parameters]
+
+**License:** [Model license]
+
+## Hardware Configuration
+
+- **GPU Type:** [e.g., NVIDIA H100]
+- **Number of GPUs:** [e.g., 8] (or a list of GPUs used)
+- **Number of Nodes:** [e.g., 4]
+- **GPUs per Node:** [e.g., 8]
+- **Network:** [e.g., InfiniBand, if relevant]
+- **Total GPU Memory:** [e.g., 640GB]
+
+
+
+## Prerequisites
+
+[Any setup needed before running the workflow]
+
+## Parallelism Configuration
+
+- **Tensor Parallel Size:** [e.g., 8]
+- **Pipeline Parallel Size:** [e.g., 4]
+- **Total Parallel Size:** [TP × PP]
+
+## Step-by-Step Instructions
+
+### 1. Environment Setup
+
+[Activate environment commands]
+
+### 2. Model Download/Access
+
+[How to access the model]
+
+### 3. Server Launch
+
+[Complete command with all flags]
+
+```bash
+vllm serve meta-llama/Meta-Llama-3.1-405B-Instruct \
+    --tensor-parallel-size 8 \
+    --pipeline-parallel-size 4 \
+    --gpu-memory-utilization 0.95 \
+    --max-model-len 4096
+```
+
+### 4. Client Usage
+
+[Example client requests]
+
+```bash
+curl http://localhost:8000/v1/completions \
+    -H "Content-Type: application/json" \
+    -d '{
+        "model": "meta-llama/Meta-Llama-3.1-405B-Instruct",
+        "prompt": "Hello, how are you?",
+        "max_tokens": 100
+    }'
+```
+
+## Performance Notes
+
+[Any performance observations or tuning recommendations]
+
+## Troubleshooting
+
+[Common issues and solutions]
+
+## References
+
+- [Related workflows, if any]
+- [External documentation links]
+
+## Maintainer
+
+- Created by: [Name]
+- Date: [YYYY-MM-DD]
+- Last updated: [YYYY-MM-DD]
+```
+
+**Step 3: Add Figures (Optional)**
+
+If you have benchmark plots, architecture diagrams, or screenshots:
+- Create a `figures/` subdirectory
+- Inside the `figures/` directory, create format folders if needed (e.g., `png/`, `svg/`)
+- Use descriptive filenames
+- Reference figures in the README
+
+---
+
+## Contributing Reports
+
+### Purpose
+
+The `reports/` directory contains **benchmark and evaluation studies** based on workflows.
+
+A report typically involves:
+- Selecting one or more workflows
+- Running systematic experiments
+- Measuring performance metrics
+- Publishing reproducible results and analysis scripts
+
+### Structure
+
+```
+reports/
+  README.md
+  r<date>_<short-description>/
+    README.md
+    figures/
+    code/
+```
+
+### Adding a New Report
+
+**Step 1: Create Report Directory**
+
+Use this naming convention:
+
+```
+r<date>_<short-description>
+```
+
+**Examples:**
+```
+r20260303_llama3.1-405b_multinode-throughput
+r20260315_deepseek-r1_scaling-analysis
+r20260320_vllm-performance-comparison
+```
+
+**Date format:** YYYYMMDD (date the study was initiated or completed)
+
+**Step 2: Create Directory Structure**
+
+```
+r20260303_llama3.1-405b_multinode-throughput/
+  README.md
+  figures/
+  code/
+```
+
+**Step 3: Create Report README**
+
+Every report **must** include a comprehensive `README.md`:
+
+```markdown
+# [Report Title]
+
+## Summary
+
+[2-3 paragraph summary of the study, key findings, and conclusions]
+
+## Objective
+
+[What questions does this report answer?]
+
+## Referenced Workflow(s)
+
+**Primary workflow:**
+```
+workflows/Meta-Llama-3.1-405b_multinode-server
+```
+
+**Repository commit:**
+```
+<commit-hash>
+```
+
+[List additional workflows if comparing multiple]
+
+## Environment Used
+
+**Environment:**
+```
+envs/conda/c20260303_vllm
+```
+
+## Hardware Configuration
+
+- **GPU Type:** [e.g., NVIDIA H100]
+- **Number of GPUs:** [e.g., 32]
+- **Number of Nodes:** [e.g., 4]
+- **Network:** [e.g., InfiniBand]
+
+## Methodology
+
+### Experimental Setup
+
+[Describe how experiments were conducted]
+
+### Metrics Measured
+
+- [Metric 1: e.g., Throughput (tokens/second)]
+- [Metric 2: e.g., Latency (ms)]
+- [Metric 3: e.g., GPU utilization (%)]
+
+### Test Configuration
+
+[Details of test parameters, prompt lengths, batch sizes, etc.]
+
+## Results
+
+### Key Findings
+
+1. [Finding 1]
+2. [Finding 2]
+3. [Finding 3]
+
+### Detailed Results
+
+[Present results with figures and tables]
+
+![Throughput vs Batch Size](figures/throughput_vs_batch_size.png)
+
+[Analysis and interpretation]
+
+## Reproduction Instructions
+
+### Step 1: Environment Setup
+
+[Exact steps to reproduce]
+
+### Step 2: Run Experiments
+
+[Exact commands used to generate results]
+
+```bash
+python code/run_benchmark.py --config config.yaml
+```
+
+### Step 3: Generate Figures
+
+[Commands to reproduce visualizations]
+
+```bash
+python code/generate_figures.py
+```
+
+## Data and Artifacts
+
+**IMPORTANT:** This report does not include large datasets or model outputs.
+
+**External data location:**
+[URL to shared storage, with access instructions]
+
+Example:
+```
+Data location: https://drive.google.com/drive/...
+Access: Contact [maintainer] for permissions
+Size: ~500GB
+Contents: Raw benchmark logs, model outputs
+```
+
+## Code
+
+All analysis and figure generation code is in the `code/` directory:
+- `run_benchmark.py` - Main benchmark script
+- `generate_figures.py` - Figure generation
+- `analyze_results.py` - Statistical analysis
+- `config.yaml` - Experiment configuration
+
+## Limitations
+
+[Any limitations of the study, caveats, or known issues]
+
+## Future Work
+
+[Potential follow-up studies or improvements]
+
+## References
+
+- [Citations to papers, documentation, related work]
+
+## Maintainer
+
+- Created by: [Name]
+- Date: [YYYY-MM-DD]
+- Last updated: [YYYY-MM-DD]
+
+
+**Step 4: Add Code**
+
+Place all analysis scripts in the `code/` subdirectory:
+- Benchmark scripts
+- Data processing scripts
+- Figure generation scripts
+- Configuration files
+
+Make scripts as self-contained as possible with clear usage instructions.
+
+**Step 5: Add Figures**
+
+Place all visualizations in the `figures/` subdirectory:
+- Use descriptive filenames
+- Prefer PNG or SVG formats
+- Include high-resolution versions if available
+
+### Important: No Large Files
+
+Reports **must NOT** include:
+- Large datasets (>10MB)
+- Model weights
+- Extensive log files
+- Large model outputs
+
+Store these externally and provide links with access instructions.
+
+---
+
+## Contributing Workshops
+
+### Purpose
+
+The `workshops/` directory contains **structured instructional material** for teaching and training.
+
+Examples:
+- Hands-on tutorials
+- Training sessions
+- Educational workshops
+
+### Structure
+
+```
+workshops/
+  README.md
+  w<date>_<workshop-name>/
+    README.md
+    agenda.md
+    exercises/
+    figures/
+```
+
+### Adding a New Workshop
+
+**Step 1: Create Workshop Directory**
+
+Use this naming convention:
+
+```
+w<date>_<workshop-name>
+```
+
+**Examples:**
+```
+w260410_vllm-inference-workshop
+w260515_distributed-llm-training
+w260620_performance-optimization
+```
+
+**Date format:** YYMMDD (workshop date or creation date)
+
+**Step 2: Create Directory Structure**
+
+```bash
+w260410_vllm-inference-workshop/
+  README.md
+  agenda.md
+  exercises/
+    01_single_gpu.md
+    02_tensor_parallel.md
+    03_multinode_setup.md
+  figures/
+  code/
+```
+
+**Step 3: Create Workshop README**
+
+```markdown
+# [Workshop Name]
+
+## Overview
+
+[Brief description of workshop goals and target audience]
+
+## Target Audience
+
+[Who should attend: experience level, prerequisites]
+
+## Duration
+
+[Expected workshop length: e.g., 4 hours, 2 days]
+
+## Prerequisites
+
+### Knowledge
+- [Required background knowledge]
+
+### Technical Requirements
+- [Hardware requirements]
+- [Software requirements]
+- [Access requirements]
+
+### Environment
+
+**Workshop environment:**
+
+```bash
+envs/conda/c260303_vllm
+```
+
+## Learning Objectives
+
+By the end of this workshop, participants will be able to:
+1. [Objective 1]
+2. [Objective 2]
+3. [Objective 3]
+
+## Workshop Materials
+
+- [Agenda](agenda.md)
+- [Exercise 1: Single GPU Inference](exercises/01_single_gpu.md)
+- [Exercise 2: Tensor Parallelism](exercises/02_tensor_parallel.md)
+- [Exercise 3: Multi-node Setup](exercises/03_multinode_setup.md)
+
+## Referenced Workflows
+
+[List workflows used in the workshop]
+- `workflows/Llama-3.1-70b_single-node`
+- `workflows/Meta-Llama-3.1-405b_multinode-server`
+
+## Instructor Notes
+
+[Any notes for instructors delivering this workshop]
+
+## Feedback
+
+[How to provide feedback or suggest improvements]
+
+## Maintainer
+
+- Created by: [Name]
+- Date: [YYYY-MM-DD]
+- Last updated: [YYYY-MM-DD]
+
+```
+
+**Step 4: Create Agenda**
+
+Create `agenda.md` with a detailed schedule:
+
+```markdown
+# Workshop Agenda
+
+## Morning Session (9:00 AM - 12:00 PM)
+
+### 9:00 - 9:30: Introduction
+- Workshop overview
+- Environment setup verification
+
+### 9:30 - 10:30: Exercise 1 - Single GPU Inference
+- Concepts
+- Hands-on practice
+- Q&A
+
+[Continue with detailed timing and topics]
+```
+
+**Step 5: Create Exercises**
+
+Create numbered exercise files in `exercises/`:
+
+```markdown
+# Exercise 1: Single GPU Inference
+
+## Objective
+[What participants will learn]
+
+## Background
+[Concept explanation]
+
+## Instructions
+
+### Step 1: [Task]
+[Detailed instructions]
+
+```bash
+[Commands to run]
+```
+
+### Step 2: [Task]
+[Continue...]
+
+## Expected Output
+[What participants should see]
+
+## Troubleshooting
+[Common issues and solutions]
+
+## Discussion Questions
+1. [Question to think about]
+2. [Question to discuss]
+
+## Next Steps
+[Link to next exercise]
+```
+
+---
+
+## Contributing Utilities
+
+### Purpose
+
+The `utils/` directory contains **shared utilities and helper scripts** that are reusable across multiple workflows and reports.
+
+### Structure
+
+```
+utils/
+  README.md
+  benchmarking/
+  monitoring/
+  data_processing/
+```
+
+### What Belongs in Utils
+
+**Include:**
+- Reusable scripts for common tasks
+- Helper functions used across workflows
+- Benchmarking utilities
+- Monitoring tools
+- Data processing scripts
+- Validation scripts
+
+**Examples:**
+- `benchmark_throughput.py` - Measure inference throughput
+- `monitor_gpu.py` - Monitor GPU utilization
+- `format_results.py` - Format benchmark results
+- `validate_environment.py` - Check environment setup
+
+**Do NOT include:**
+- Workflow-specific code (belongs in workflows)
+- Report-specific analysis code (belongs in reports/*/code/)
+- One-off scripts that won't be reused
+
+### Adding a New Utility
+
+**Step 1: Choose or Create Subdirectory**
+
+Organize utilities by category:
+```
+utils/
+  benchmarking/     # Benchmarking and performance testing
+  monitoring/       # System and GPU monitoring
+  data_processing/  # Data formatting and processing
+  validation/       # Environment and setup validation
+```
+
+**Step 2: Create Well-Documented Script**
+
+Every utility script should include:
+
+```python
+#!/usr/bin/env python3
+"""
+Brief description of what this script does.
+
+Usage:
+    python script_name.py [arguments]
+
+Example:
+    python benchmark_throughput.py --model llama-3.1-70b --duration 60
+
+Requirements:
+    - Python 3.10+
+    - vllm>=0.3.0
+    - Additional requirements
+"""
+
+import argparse
+# imports...
+
+def main():
+    parser = argparse.ArgumentParser(description="Script description")
+    # argument definitions...
+    args = parser.parse_args()
+    
+    # Implementation...
+
+if __name__ == "__main__":
+    main()
+```
+
+**Step 3: Update Utils README**
+
+Add an entry to `utils/README.md`:
+
+```markdown
+## benchmarking/benchmark_throughput.py
+
+**Purpose:** Measure inference throughput for vLLM servers.
+
+**Usage:**
+```bash
+python benchmarking/benchmark_throughput.py --model MODEL --duration SECONDS
+```
+
+**Parameters:**
+- `--model`: Model name or path
+- `--duration`: Test duration in seconds
+
+**Dependencies:** vllm, requests, numpy
+
+**Example:**
+```bash
+python benchmarking/benchmark_throughput.py \
+    --model meta-llama/Llama-3.1-70B \
+    --duration 60 \
+    --output results.json
+```
+
+**Used by:**
+- reports/r20260303_llama3.1-405b_multinode-throughput
+- workflows/Meta-Llama-3.1-405b_multinode-server
+```
+
+### Utility Script Best Practices
+
+1. **Make scripts standalone and self-contained**
+2. **Include comprehensive help text**
+3. **Use argparse for command-line arguments**
+4. **Provide clear error messages**
+5. **Document dependencies explicitly**
+6. **Include usage examples**
+7. **Write docstrings for functions**
+8. **Handle exceptions gracefully**
+
+---
+
+## Cross-Referencing Guidelines
+
+Proper cross-referencing ensures traceability and reproducibility across the repository.
+
+### Reference Format
+
+When referencing other repository content, use relative paths from the repository root.
+
+**Format:**
+```markdown
+Referenced resource:
+```
+path/to/resource
+```
+(commit: <commit-hash>)
+```
+
+### Workflows Referencing Environments
+
+**Required in every workflow README:**
+
+```markdown
+## Environment
+
+**Environment used:**
+```
+envs/conda/c20260303_vllm
+```
+
+**Repository commit:**
+```
+a1b2c3d4e5f6g7h8i9j0
+```
+```
+
+### Reports Referencing Workflows
+
+**Required in every report README:**
+
+```markdown
+## Referenced Workflow(s)
+
+**Primary workflow:**
+```
+workflows/Meta-Llama-3.1-405b_multinode-server
+```
+
+**Repository commit:**
+```
+a1b2c3d4e5f6g7h8i9j0
+```
+```
+
+For multiple workflows:
+
+```markdown
+**Compared workflows:**
+1. `workflows/Llama-3.1-70b_tensor-parallel`
+2. `workflows/Llama-3.1-405b_multinode-server`
+3. `workflows/DeepSeek-R1_single-node-inference`
+
+**Repository commit:** (same for all)
+```
+a1b2c3d4e5f6g7h8i9j0
+```
+```
+
+### Workshops Referencing Workflows
+
+**In workshop README:**
+
+```markdown
+## Referenced Workflows
+
+This workshop uses the following workflows:
+
+**Exercise 1:**
+```
+workflows/Llama-3.1-70b_single-node
+```
+
+**Exercise 3:**
+```
+workflows/Meta-Llama-3.1-405b_multinode-server
+```
+
+**Repository commit:**
+```
+a1b2c3d4e5f6g7h8i9j0
+```
+```
+
+### Workflows Referencing Utilities
+
+**In workflow README:**
+
+```markdown
+## Utilities Used
+
+This workflow uses the following utilities:
+
+```
+utils/benchmarking/benchmark_throughput.py
+utils/monitoring/monitor_gpu.py
+```
+```
+
+### Reports Referencing Utilities
+
+**In report code:**
+
+```python
+# This analysis uses utilities from the repository
+# utils/benchmarking/benchmark_throughput.py (commit: a1b2c3d4)
+# utils/data_processing/format_results.py (commit: a1b2c3d4)
+```
+
+### Workflows Extending Other Workflows
+
+If a workflow builds on or extends another:
+
+```markdown
+## Related Workflows
+
+This workflow extends:
+```
+workflows/Llama-3.1-70b_single-node
+```
+
+**Changes from base workflow:**
+- Increased tensor parallel size from 4 to 8
+- Modified memory utilization settings
+- Added custom sampling parameters
+```
+
+### Getting Commit Hashes
+
+To get the current commit hash:
+
+```bash
+git rev-parse HEAD
+```
+
+To get a short commit hash:
+
+```bash
+git rev-parse --short HEAD
+```
+
+Always use the **full commit hash** in documentation for maximum precision. Or use the short hash and hyperlink to the long hash link in the repository.
+
+---
+
+## Git Workflow and Versioning
+
+### Branch Strategy
+
+**Main branch:**
+- Protected
+- Contains stable, reviewed content
+- All contributions via pull requests
+
+**Feature branches:**
+Use descriptive branch names:
+```
+feature/add-llama3-405b-workflow
+report/multinode-throughput-analysis
+workshop/vllm-inference-basics
+fix/update-environment-cuda-version
+```
+
+### Commit Messages
+
+Use clear, descriptive commit messages:
+
+**Format:**
+```
+<type>: <short description>
+
+<optional detailed description>
+```
+
+**Types:**
+- `env`: Adding or updating environments
+- `workflow`: Adding or updating workflows
+- `report`: Adding or updating reports
+- `workshop`: Adding or updating workshops
+- `util`: Adding or updating utilities
+- `docs`: Documentation updates
+- `fix`: Bug fixes
+
+**Examples:**
+```
+workflow: Add Meta-Llama-3.1-405B multinode server workflow
+
+This workflow demonstrates running the 405B model across 4 nodes
+with tensor parallelism and pipeline parallelism.
+
+Environment: envs/conda/c20260303_vllm
+Hardware: 4x8 H100 GPUs
+```
+
+```
+report: Add throughput analysis for Llama-3.1-405B
+
+Comprehensive benchmarking study measuring throughput across
+different batch sizes and parallelism configurations.
+```
+
+```
+env: Update vLLM to version 0.3.5 in conda environment
+
+Created new environment c20260310_vllm with updated vLLM version
+to support new features required for DeepSeek-R1.
+```
+
+### Pull Request Process
+
+1. **Create feature branch** from main
+2. **Make changes** following contribution guidelines
+3. **Commit changes** with clear messages
+4. **Push branch** to repository
+5. **Open pull request** with:
+   - Clear title
+   - Description of changes
+   - References to related issues (if any)
+   - Testing/verification performed
+6. **Address review feedback**
+7. **Merge** when approved
+
+### Git Tags for Major Releases
+
+Use git tags to mark significant repository milestones.
+
+**When to tag:**
+- Major workflow additions
+- Significant restructuring
+- Workshop releases
+- Important report publications
+
+**Tag format:**
+```
+v<year>.<month>.<release>
+```
+
+**Examples:**
+```
+v2026.03.1  # First release in March 2026
+v2026.03.2  # Second release in March 2026
+v2026.04.1  # First release in April 2026
+```
+
+**Creating a tag:**
+```bash
+# Create annotated tag
+git tag -a v2026.03.1 -m "Release March 2026.1: Added Llama 3.1 workflows and benchmarking reports"
+
+# Push tag to remote
+git push origin v2026.03.1
+```
+
+**Tag message should include:**
+- Summary of major additions
+- Notable changes
+- New workflows, reports, or workshops
+
+**Example tag message:**
+```
+Release March 2026.1
+
+Major Additions:
+- Workflows for Meta-Llama-3.1-405B multinode serving
+- Throughput benchmarking report for 405B model
+- Updated vLLM environment to v0.3.5
+
+New Content:
+- workflows/Meta-Llama-3.1-405b_multinode-server
+- reports/r20260303_llama3.1-405b_multinode-throughput
+- envs/conda/c20260310_vllm
+
+Contributors: [Names]
+```
+
+### Viewing Tags
+
+```bash
+# List all tags
+git tag
+
+# Show tag details
+git show v2026.03.1
+
+# Checkout code at specific tag
+git checkout v2026.03.1
+```
+
+---
+
+## General Guidelines
+
+### Code Style
+
+**Python:**
+- Follow PEP 8
+- Use type hints where appropriate
+- Include docstrings for functions and classes
+- Maximum line length: 100 characters
+
+**Shell Scripts:**
+- Use `#!/bin/bash` or `#!/usr/bin/env bash`
+- Include comments for complex commands
+- Use meaningful variable names
+- Test on target environment
+
+**SLURM Scripts:**
+- Include resource requirements as comments
+- Document expected run time
+- Provide contact information for errors
+
+### Documentation Style
+
+**Markdown:**
+- Use ATX-style headers (`#`, `##`, etc.)
+- Include code blocks with language specification
+- Use tables for structured data
+- Include links to related content
+
+**Clarity:**
+- Write for users unfamiliar with your specific setup
+- Explain acronyms on first use
+- Include examples liberally
+- Provide context for decisions
+
+### File Naming
+
+**General rules:**
+- Use lowercase with hyphens for scripts: `benchmark-throughput.py`
+- Use underscores for modules: `data_processing.py`
+- Use descriptive names: `run_multinode_inference.sh` not `run.sh`
+- Include date in data files: `results_20260303.json`
+
+### Testing Your Contributions
+
+Before submitting:
+
+1. **Verify all commands work** in the specified environment
+2. **Check all links** are valid and accessible
+3. **Ensure reproducibility** by following your own instructions from scratch
+4. **Validate formatting** by previewing Markdown
+5. **Spell check** documentation
+
+### Getting Help
+
+If you have questions or need clarification:
+
+1. Check existing workflows/reports for examples
+2. Review this contribution guide thoroughly
+3. Open an issue for discussion
+4. Contact repository maintainers
+
+### Code of Conduct
+
+- Be respectful and professional
+- Provide constructive feedback
+- Focus on improving documentation quality
+- Help others learn and contribute
+
+---
+
+## Quick Reference
+
+### Checklist for Adding a Workflow
+
+- [ ] Create workflow directory with correct naming
+- [ ] Write comprehensive README with all required sections
+- [ ] Include environment reference with commit hash
+- [ ] Document hardware configuration
+- [ ] Provide exact run commands
+- [ ] Add figures if available
+- [ ] Test instructions on fresh setup
+- [ ] Create pull request with clear description
+
+### Checklist for Adding a Report
+
+- [ ] Create report directory with correct naming
+- [ ] Write comprehensive README with all required sections
+- [ ] Reference workflows used
+- [ ] Include environment and commit hash
+- [ ] Document methodology clearly
+- [ ] Add figures to `figures/` directory
+- [ ] Add analysis code to `code/` directory
+- [ ] Provide external data links (no large files in repo)
+- [ ] Test reproduction instructions
+- [ ] Create pull request with clear description
+
+### Checklist for Adding a Workshop
+
+- [ ] Create workshop directory with correct naming
+- [ ] Write comprehensive README
+- [ ] Create detailed agenda
+- [ ] Write numbered exercise files
+- [ ] Reference workflows used
+- [ ] Include all necessary materials
+- [ ] Test exercises on target audience
+- [ ] Create pull request with clear description
+
+### Checklist for Adding an Environment
+
+- [ ] Create environment directory with correct naming
+- [ ] Include environment definition files
+- [ ] Write comprehensive README with specifications
+- [ ] Document installation steps
+- [ ] Provide verification commands
+- [ ] Test environment creation from scratch
+- [ ] Create pull request with clear description
+
+### Checklist for Adding a Utility
+
+- [ ] Create well-documented script with usage examples
+- [ ] Add appropriate category subdirectory
+- [ ] Include docstrings and comments
+- [ ] Update utils/README.md
+- [ ] Test utility in isolation
+- [ ] Create pull request with clear description
+
+---
+
+## Questions?
+
+For questions about contributing:
+- Open an issue for discussion
+- Contact repository maintainers
+- Review existing contributions for examples
+
+Thank you for contributing to this executable documentation knowledge base!
