@@ -2,7 +2,9 @@
 
 Executable documentation and knowledge base for running distributed LLM inference using vLLM on HPC clusters.
 
-![Distributed Inference Architecture](figures/png/distributed_inference_readme.png)
+<p align="center">
+  <img src="figures/png/distributed_inference_readme.png" alt="Distributed Inference Architecture" width="60%">
+</p>
 
 ## Overview
 
