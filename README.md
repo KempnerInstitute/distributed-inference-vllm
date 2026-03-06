@@ -17,10 +17,14 @@ This repository provides reproducible recipes for deploying large language model
 ```bash
 # 1. Set up environment
 cd envs/uv/u260304_vllm
-source vllm_env/bin/activate
+export UV_CACHE_DIR=<your-cache-directory>  # Set cache directory
+uv venv vllm_env --python 3.12 --seed       # Create virtual environment
+source vllm_env/bin/activate                # Activate environment
+uv pip install -r requirements-frozen.txt   # Install packages
 
 # 2. Run a workflow
-cd ../../../workflows/Qwen2.5-32B-Instruct_single-gpu-inference
+cd ../../..                                 # Return to repo root
+cd workflows/Qwen2.5-32B-Instruct_single-gpu-inference
 python simple_inference_test.py
 ```
 
@@ -81,6 +85,7 @@ See [LICENSE](LICENSE) for details.
 
 ## NEWS
 
+- **2026-03-06**: Added Meta-Llama-3.1-405B-Instruct-FP8 multi-node workflow. New [workflow](workflows/Meta-Llama-3.1-405B-Instruct-FP8_multinode-server/) for deploying the 405B parameter model with FP8 quantization (382GB storage) on 8×H100 or 4×H200 GPUs. Features ~50% memory reduction vs FP16/BF16, improved throughput, and comprehensive HPC deployment guide with Ray cluster initialization, batch processing examples, and production-ready SLURM scripts.
 - **2026-03-04**: First uv environment ([u260304_vllm](envs/uv/u260304_vllm/)) and workflow ([Qwen2.5-32B-Instruct single-GPU inference](workflows/Qwen2.5-32B-Instruct_single-gpu-inference/)). Includes vLLM 0.11.2 with CUDA 12.9 support and comprehensive documentation following the new contribution guidelines.
 - **2025-06-09**: Added DeepSeek-R1-0528 workflow - an upgraded version with enhanced math, programming, and logic reasoning. See [DeepSeek-R1-0528 workflow](workflows/DeepSeek-R1-0528_multinode-server/) for details.
 - **2025-06-09**: DeepSeek-R1 multi-node deployment. New conda environment ([c250609_vllm085](envs/conda/c250609_vllm085/)) with vLLM 0.8.5.post1 and comprehensive [workflow](workflows/DeepSeek-R1_multinode-server/) for deploying 671B parameter model with FP8 precision on 16×H100 or 8×H200 GPUs. Includes throughput benchmarks and SLURM scripts.
