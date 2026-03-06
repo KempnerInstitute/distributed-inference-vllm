@@ -2,6 +2,10 @@
 
 Executable documentation and knowledge base for running distributed LLM inference using vLLM on HPC clusters.
 
+<p align="center">
+  <img src="figures/png/distributed_inference_readme.png" alt="Distributed Inference Architecture" width="60%">
+</p>
+
 ## Overview
 
 This repository provides reproducible recipes for deploying large language model inference at scale. Each workflow includes complete environment specifications, step-by-step instructions, and performance benchmarks tested on real GPU clusters.
