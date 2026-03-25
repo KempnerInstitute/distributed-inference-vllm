@@ -117,7 +117,7 @@ You should receive a JSON response with the generated text.
 We've provided `test_server_3a.py` to demonstrate programmatic access:
 
 ```bash
-python test_server_3a.py
+python scripts/test_server_3a.py
 ```
 
 The script sends multiple requests and measures latency and throughput.
@@ -139,7 +139,7 @@ nvtop
 
 ### 7. Experiment with Concurrent Requests
 
-Modify `test_server_3a.py` to send more concurrent requests and observe:
+Modify `scripts/test_server_3a.py` to send more concurrent requests and observe:
 - How vLLM handles batching automatically
 - Throughput improvements with concurrent requests
 - Response time distribution
@@ -187,7 +187,7 @@ Node 1 (Head)                Node 2 (Worker)
 Submit a SLURM job requesting 2 nodes with 4 GPUs each:
 
 ```bash
-sbatch setup_vllm_multinode_server.sh
+sbatch scripts/setup_vllm_multinode_server.sh
 ```
 
 The SLURM script header:
@@ -203,7 +203,7 @@ The SLURM script header:
 
 #### 2. Initialize Ray Cluster
 
-The `init_cluster.sh` script automatically:
+The `scripts/init_cluster.sh` script automatically:
 
 - Detects allocated nodes
 - Identifies the head node
@@ -212,13 +212,15 @@ The `init_cluster.sh` script automatically:
 - Configures networking
 
 ```bash
-source ./init_cluster.sh
+source ./scripts/init_cluster.sh
 ```
 
 **What happens:**
 - Ray head starts on port 6379
 - Worker nodes connect to head node IP
 - All GPUs across nodes become available to vLLM
+
+You can review the script at `scripts/init_cluster.sh` to understand the Ray setup process.
 
 #### 3. Start vLLM with Ray Backend
 
@@ -298,8 +300,8 @@ export NCCL_SOCKET_FAMILY=AF_INET
 
 All scripts for multi-node setup are available:
 
-- `init_cluster.sh` - Ray cluster initialization
-- `setup_vllm_multinode_server.sh` - Complete SLURM job script
+- `scripts/init_cluster.sh` - Ray cluster initialization
+- `scripts/setup_vllm_multinode_server.sh` - Complete SLURM job script
 - Check `workflows/Meta-Llama-3.1-405B-Instruct-FP8_multinode-server/` for full examples
 
 ---

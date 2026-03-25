@@ -63,7 +63,7 @@ We'll use Qwen2.5-32B-Instruct with vLLM in offline batch mode.
 Review the script:
 
 ```bash
-cat vllm_inference_2a.py
+cat scripts/vllm_inference_2a.py
 ```
 
 The script performs:
@@ -75,7 +75,7 @@ The script performs:
 Run the script:
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python vllm_inference_2a.py
+CUDA_VISIBLE_DEVICES=0 python scripts/vllm_inference_2a.py
 ```
 
 ### 4. Observe the Output
@@ -127,7 +127,7 @@ We'll use Llama-3.1-70B, which requires 2 GPUs with tensor parallelism.
 Review the script:
 
 ```bash
-cat vllm_inference_2b.py
+cat scripts/vllm_inference_2b.py
 ```
 
 The script demonstrates:
@@ -139,7 +139,7 @@ The script demonstrates:
 Run the script:
 
 ```bash
-python vllm_inference_2b.py
+python scripts/vllm_inference_2b.py
 ```
 
 ### 4. Observe GPU Utilization

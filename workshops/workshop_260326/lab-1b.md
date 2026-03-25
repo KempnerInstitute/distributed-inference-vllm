@@ -64,7 +64,7 @@ We'll use the `llm_inference_1b.py` script to run baseline inference with Meta-L
 First, review the script:
 
 ```bash
-cat llm_inference_1b.py
+cat scripts/llm_inference_1b.py
 ```
 
 The script performs:
@@ -76,7 +76,7 @@ The script performs:
 Run the script (limiting to a single GPU):
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python llm_inference_1b.py
+CUDA_VISIBLE_DEVICES=0 python scripts/llm_inference_1b.py
 ```
 
 Note: `CUDA_VISIBLE_DEVICES=0` ensures only GPU 0 is used for this baseline test.
@@ -98,7 +98,7 @@ nvtop
 
 ## 5. Try Different Prompts
 
-Edit `llm_inference_1b.py` and modify the prompt:
+Edit `scripts/llm_inference_1b.py` and modify the prompt:
 
 ```python
 prompt = "Your custom prompt here"
