@@ -4,13 +4,13 @@ Welcome to this hands-on workshop on distributed inference for large language mo
 
 ## Workshop Team
 
-**Instructor:** 
+**Instructor** 
 - Naeem Khoshnevis, Lead ML Research Engineer at Kempner Institute
 
-**Associate Director of Education:** 
+**Associate Director of Education** 
 - Denise Yoon
 
-**Teaching Assistants (listed alphabetically):** 
+**Teaching Assistants (listed alphabetically)** 
 - Bala Desinghu
 - Yasin Mazloumi
 - Nihal Vivekanand Nayak
@@ -68,7 +68,7 @@ This prework ensures everyone starts with a shared baseline and helps you unders
 | | The Inference Engine ||
 | | The Model ||
 | | Forms of the LLM Inference ||
-| 10:15 AM | **LAB 1.a** | Hands-on: Connect to the Cluster &  Setup Environment |
+| 10:15 AM | **[LAB 1.a](lab-1a.md)** | Hands-on: Connect to the Cluster &  Setup Environment |
 | | Llama 3.1 Architecture ||
 | | The Self-Attention Mechanism ||
 | | Attention Implementation, Compute and Memory ||
@@ -80,7 +80,7 @@ This prework ensures everyone starts with a shared baseline and helps you unders
 | | Memory requirements ||
 | | Memory Cost of a Single Inference Request ||
 | | Performance Metrics ||
-| 10:45 AM | **LAB 1.b** | Hands-on: Performance baseline |
+| 10:45 AM | **[LAB 1.b](lab-1b.md)** | Hands-on: Performance baseline |
 | | **Break** | Coffee break |
 | 11:00 AM | **The Optimization** | |
 | | Why Inference Systems Exist | |
@@ -94,15 +94,15 @@ This prework ensures everyone starts with a shared baseline and helps you unders
 | | Types of Parallelism ||
 | | vLLM Runtime Parameters || 
 | | Offline/Batch vLLM Inference with Python API ||
-| | **LAB 2** | Hands-on: Optimizing inference with vLLM |
+| | **[LAB 2](lab-2.md)** | Hands-on: Optimizing inference with vLLM |
 | 11:45 AM | **The Production** | |
 | | Why Deploy and Inference Server? | |
 | | vLLM Engine Architecture | |
 | | Deploying the vLLM Server on HPC Clusters | |
 | | vLLM Output Format | |
-| | **LAB 3** | Hands-on: Deploy and scale vLLM server |
-| | Advanced Topics | |
-| 12:20 PM | Wrap-up and Q&A | Final questions and next steps |
+| | **[LAB 3](lab-3.md)** | Hands-on: Deploy and scale vLLM server |
+| 12:20 PM | Advanced Topics | |
+| | Wrap-up and Q&A | Final questions and next steps |
 | 12:30 PM | End | | 
 
 
