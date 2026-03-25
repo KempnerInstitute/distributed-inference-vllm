@@ -73,7 +73,9 @@ echo "========================================================================="
 
 # Source init_cluster.sh to set up Ray across nodes
 # This must be sourced (not executed) to export variables
-source ./init_cluster.sh
+# Get the directory where this script is located
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "$SCRIPT_DIR/init_cluster.sh"
 
 if [ $? -ne 0 ]; then
     echo "Error: Ray cluster initialization failed"
