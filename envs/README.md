@@ -8,6 +8,7 @@ This directory contains reproducible runtime environment definitions for executi
 
 | Name | Python | vLLM | CUDA | Notes |
 |------|--------|------|------|-------|
+| [u260324_vllm_source](uv/u260324_vllm_source/) | 3.12.11 | 0.18.1rc1.dev101+ga32783bb3.precompiled | 12.8 | Source-based setup with precompiled vLLM wheel| 
 | [u260304_vllm](uv/u260304_vllm/) | 3.12.11 | 0.11.2 | 12.9.1 |  |
 
 ### Conda Environments
