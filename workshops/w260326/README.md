@@ -19,7 +19,13 @@ Welcome to this hands-on workshop on distributed inference for large language mo
 
 ## Objective
 
-TBD
+By the end of this workshop, you will be able to:
+
+- Explain the core steps of LLM inference and the generation loop.
+- Identify key performance challenges in LLM inference systems.
+- Understand how vLLM improves inference efficiency.
+- Run LLM inference on the Kempner HPC cluster.
+- Deploy and interact with a vLLM inference server.
 
 
 ## Prework 
@@ -71,7 +77,7 @@ This prework ensures everyone starts with a shared baseline and helps you unders
 | 10:15 AM | **[LAB 1.a](lab-1a.md)** | Hands-on: Connect to the Cluster &  Setup Environment |
 | | Llama 3.1 Architecture ||
 | | The Self-Attention Mechanism ||
-| | Attention Implementation, Compute and Memory ||
+| | Attention Implementation ||
 | | The Anatomy of Inference (Pipeline Overview)||
 | | KV Caching ||
 | | Prefill vs. Decode  ||
@@ -92,7 +98,6 @@ This prework ensures everyone starts with a shared baseline and helps you unders
 | | The Connectivity Hierarchy to Go Beyond One GPU || 
 | | Key Facts for Multi-GPU Inference ||
 | | Types of Parallelism ||
-| | vLLM Runtime Parameters || 
 | | Offline/Batch vLLM Inference with Python API ||
 | | **[LAB 2](lab-2.md)** | Hands-on: Optimizing inference with vLLM |
 | 11:45 AM | **The Production** | |

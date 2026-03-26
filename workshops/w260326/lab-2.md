@@ -75,6 +75,7 @@ The script performs:
 Run the script:
 
 ```bash
+module load gcc/13.2.0-fasrc01 
 CUDA_VISIBLE_DEVICES=0 python scripts/vllm_inference_2a.py
 ```
 
@@ -139,6 +140,7 @@ The script demonstrates:
 Run the script:
 
 ```bash
+module load gcc/13.2.0-fasrc01 
 python scripts/vllm_inference_2b.py
 ```
 

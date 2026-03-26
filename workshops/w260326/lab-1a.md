@@ -55,8 +55,8 @@ git checkout a32783bb35c6120df88d57609c8e454f9131f0a1
 > `uv` comes with significant amount of files. So it is important to use common cache directory to avoid hitting quota issues and to avoid unnecessary downloads. Please set your cache directory to a common location (e.g. in your lab directory or provided by the workshop) by setting the `UV_CACHE_DIR` environment variable before running `uv` commands.
 
 ```bash
-export UV_CACHE_DIR=<your cache directory>  # Set cache directory to avoid quota issues
-
+export UV_CACHE_DIR=/n/netscratch/kempner_lab/Everyone/inference_workshop/uv_cache_dir  
+```
 
 ```bash
 uv venv --python 3.12.11
