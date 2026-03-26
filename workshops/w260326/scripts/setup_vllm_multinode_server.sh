@@ -40,7 +40,8 @@ echo "========================================================================="
 
 # Model configuration
 MODEL_NAME="meta-llama/Meta-Llama-3.1-405B-Instruct"  # Adjust as needed
-TENSOR_PARALLEL_SIZE=8  # Total GPUs (4 GPUs/node × 2 nodes)
+TENSOR_PARALLEL_SIZE=4  # Total GPUs (4 GPUs/node)
+PIPELINE_PARALLEL_SIZE=2  # Number of nodes
 MAX_MODEL_LEN=16384     # Adjust based on model and use case
 GPU_MEMORY_UTIL=0.90    # GPU memory utilization (0.85-0.95)
 
@@ -101,7 +102,7 @@ export NCCL_DEBUG=INFO  # Set to INFO for debugging, WARN for production
 export VLLM_ALLREDUCE_USE_SYMM_MEM=0
 export VLLM_DISTRIBUTED_EXECUTOR_CONFIG='{"placement_group_options":{"strategy":"SPREAD"}}'
 
-echo "✓ NCCL configured"
+echo "NCCL configured"
 
 # ============================================================================
 # 4. Start vLLM Server
@@ -120,6 +121,7 @@ echo ""
 python -m vllm.entrypoints.openai.api_server \
     --model $MODEL_NAME \
     --tensor-parallel-size $TENSOR_PARALLEL_SIZE \
+    --pipeline-parallel-size $PIPELINE_PARALLEL_SIZE \
     --max-model-len $MAX_MODEL_LEN \
     --distributed-executor-backend ray \
     --gpu-memory-utilization $GPU_MEMORY_UTIL \
@@ -161,7 +163,7 @@ done
 
 echo ""
 echo "========================================================================="
-echo "✓ SERVER IS LIVE AND READY"
+echo "SERVER IS LIVE AND READY"
 echo "========================================================================="
 echo "Server URL: http://$VLLM_HOST_IP:8000"
 echo "OpenAI API endpoint: http://$VLLM_HOST_IP:8000/v1"
