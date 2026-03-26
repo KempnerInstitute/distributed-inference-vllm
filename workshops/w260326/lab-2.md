@@ -43,12 +43,6 @@ Request an interactive session with a single GPU:
 salloc -p kempner_eng --reservation=inference_workshop    --nodes=1 --ntasks=1   --cpus-per-task=32   --mem=256G   --gres=gpu:1   -t 00-8:00:00
 ```
 
-Once allocated, SSH into the node:
-
-```bash
-ssh $SLURM_NODELIST
-```
-
 ### 2. Activate Your Environment
 
 ```bash
@@ -75,6 +69,7 @@ The script performs:
 Run the script:
 
 ```bash
+module load gcc/13.2.0-fasrc01 
 CUDA_VISIBLE_DEVICES=0 python scripts/vllm_inference_2a.py
 ```
 
@@ -107,12 +102,6 @@ exit  # if needed
 salloc -p kempner_eng --reservation=inference_workshop    --nodes=1 --ntasks=1   --cpus-per-task=32   --mem=256G   --gres=gpu:2   -t 00-8:00:00
 ```
 
-Once allocated, SSH into the node:
-
-```bash
-ssh $SLURM_NODELIST
-```
-
 ### 2. Activate Your Environment
 
 ```bash
@@ -139,6 +128,7 @@ The script demonstrates:
 Run the script:
 
 ```bash
+module load gcc/13.2.0-fasrc01 
 python scripts/vllm_inference_2b.py
 ```
 
@@ -147,8 +137,9 @@ python scripts/vllm_inference_2b.py
 In another terminal, monitor both GPUs:
 
 ```bash
-ssh $SLURM_NODELIST
+ssh <hostname_of_your_node>
 watch -n 1 nvidia-smi
+# or use nvtop for a more detailed view
 ```
 
 **What to observe:**

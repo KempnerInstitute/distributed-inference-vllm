@@ -41,12 +41,6 @@ Request an interactive session with 2 GPUs:
 salloc -p kempner_eng --reservation=inference_workshop    --nodes=1 --ntasks=1   --cpus-per-task=32   --mem=256G   --gres=gpu:2   -t 00-8:00:00
 ```
 
-Once allocated, SSH into the node:
-
-```bash
-ssh $SLURM_NODELIST
-```
-
 ### 2. Activate Your Environment
 
 ```bash
@@ -59,6 +53,7 @@ source .venv/bin/activate
 For single-node deployments, you can start vLLM directly without Ray:
 
 ```bash
+module load gcc/13.2.0-fasrc01 
 vllm serve meta-llama/Meta-Llama-3.1-70B-Instruct \
     --tensor-parallel-size 2 \
     --dtype bfloat16 \
@@ -83,7 +78,7 @@ INFO:     Uvicorn running on http://0.0.0.0:8000
 Open a **new terminal**, SSH to the same node, and send a test request:
 
 ```bash
-ssh $SLURM_NODELIST
+ssh <hostname_of_your_node>
 
 curl http://localhost:8000/v1/chat/completions \
   -H "Content-Type: application/json" \
@@ -127,7 +122,7 @@ The script sends multiple requests and measures latency and throughput.
 In another terminal, monitor GPU utilization:
 
 ```bash
-ssh $SLURM_NODELIST
+ssh <hostname_of_your_node>
 nvtop
 ```
 
