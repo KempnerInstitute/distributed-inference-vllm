@@ -101,7 +101,7 @@ This prework ensures everyone starts with a shared baseline and helps you unders
 | | Offline/Batch vLLM Inference with Python API ||
 | | **[LAB 2](lab-2.md)** | Hands-on: Optimizing inference with vLLM |
 | 11:45 AM | **The Production** | |
-| | Why Deploy and Inference Server? | |
+| | Why Deploy an Inference Server? | |
 | | vLLM Engine Architecture | |
 | | Deploying the vLLM Server on HPC Clusters | |
 | | vLLM Output Format | |
