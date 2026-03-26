@@ -101,7 +101,7 @@ This prework ensures everyone starts with a shared baseline and helps you unders
 | | Offline/Batch vLLM Inference with Python API ||
 | | **[LAB 2](lab-2.md)** | Hands-on: Optimizing inference with vLLM |
 | 11:45 AM | **The Production** | |
-| | Why Deploy and Inference Server? | |
+| | Why Deploy an Inference Server? | |
 | | vLLM Engine Architecture | |
 | | Deploying the vLLM Server on HPC Clusters | |
 | | vLLM Output Format | |
@@ -114,5 +114,26 @@ This prework ensures everyone starts with a shared baseline and helps you unders
 
 
 # Additional Resources
+### **Additional Resources**
 
+#### **Cluster & Institute Guides**
+* [FASRC Official Documentation](https://docs.rc.fas.harvard.edu/)
+* [Kempner Engineering Handbook](https://handbook.eng.kempnerinstitute.harvard.edu/intro.html)
 
+#### **Core Documentation & Guides**
+* [vLLM Official Documentation](https://docs.vllm.ai/en/latest/)
+* [Mastering LLM Techniques: Inference Optimization](https://developer.nvidia.com/blog/mastering-llm-techniques-inference-optimization/)
+* [Baseten: Guide to Inference Engineering](https://www.baseten.co/inference-engineering/)
+* [Hugging Face: Introducing Llama 3.1](https://huggingface.co/blog/llama31)
+
+#### **Technical Deep Dives & Concepts**
+* [Hugging Face: Everything You Need to Know About KV Cache](https://huggingface.co/blog/kv-cache)
+* [Video: Understanding Continuous Batching and Throughput](https://youtu.be/z2M8gKGYws4?si=3phXlNKCSWuh9TXD&t=187)
+
+#### **Research Papers**
+* [PagedAttention: Efficient Memory Management for LLM Serving](https://arxiv.org/abs/2309.06180)
+* [FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness](https://arxiv.org/abs/2205.14135)
+* [Splitwise: Efficient Generative LLM Inference Using Phase Splitting](https://arxiv.org/pdf/2311.18677)
+
+#### **Hardware Reference**
+* [Lenovo ThinkSystem SD665-N V3 (GPU Compute Node) Specifications](https://lenovopress.lenovo.com/lp1613-thinksystem-sd665-n-v3-server)
