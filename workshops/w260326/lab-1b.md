@@ -37,6 +37,9 @@ Request an interactive session with a single GPU:
 ```bash
 salloc -p kempner_eng --reservation=inference_workshop    --nodes=1 --ntasks=1   --cpus-per-task=32   --mem=256G   --gres=gpu:1   -t 00-8:00:00
 ```
+> [!NOTE]
+> If you don't have access to the `kempner_eng` partition, please use the appropriate partition available to you and adjust the command accordingly.
+
 
 ## 2. Activate Your Environment
 
