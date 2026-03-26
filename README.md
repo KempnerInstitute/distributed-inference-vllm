@@ -89,34 +89,9 @@ See [LICENSE](LICENSE) for details.
 
 ## NEWS
 
+- **2026-03-26**: Added [Large Language Model Distributed Inference](workshops/w260326) workshop materials. The workshop was held virtually university-wide on March 26 for Harvard University affiliates.
 - **2026-03-06**: Added [Meta-Llama-3.1-405B-Instruct-FP8 multi-node](workflows/Meta-Llama-3.1-405B-Instruct-FP8_multinode-server/) workflow. New workflow for deploying the 405B parameter model with FP8 quantization (382GB storage) on 8×H100 or 4×H200 GPUs. Features ~50% memory reduction vs FP16/BF16, improved throughput, and comprehensive HPC deployment guide with Ray cluster initialization, batch processing examples, and production-ready SLURM scripts.
 - **2026-03-04**: First uv environment ([u260304_vllm](envs/uv/u260304_vllm/)) and workflow ([Qwen2.5-32B-Instruct single-GPU inference](workflows/Qwen2.5-32B-Instruct_single-gpu-inference/)). Includes vLLM 0.11.2 with CUDA 12.9 support and comprehensive documentation following the new contribution guidelines.
 - **2025-06-09**: Added DeepSeek-R1-0528 workflow - an upgraded version with enhanced math, programming, and logic reasoning. See [DeepSeek-R1-0528 workflow](workflows/DeepSeek-R1-0528_multinode-server/) for details.
 - **2025-06-09**: DeepSeek-R1 multi-node deployment. New conda environment ([c250609_vllm085](envs/conda/c250609_vllm085/)) with vLLM 0.8.5.post1 and comprehensive [workflow](workflows/DeepSeek-R1_multinode-server/) for deploying 671B parameter model with FP8 precision on 16×H100 or 8×H200 GPUs. Includes throughput benchmarks and SLURM scripts.
 - **2024-10-09**: Added Llama 3.1 workflows from Timothy Ngotiaoco and Max Shad. Two new workflows: [Llama 3.1 70B](workflows/Llama-3.1-70B_multinode-server/) (4×H100) and [Llama 3.1 405B](workflows/Llama-3.1-405B_multinode-server/) (16×H100) with 128k context length support.
-
-
-
-<!-- 
-OLD README CONTENT - TO BE REMOVED
-
-# Distributed Inference of Large Language Models with vLLM
-
-This repository explains how to run inference on the following models across multiple GPUs using the [vLLM](https://docs.vllm.ai/en/latest/index.html) library. vLLM is an open-source library that allows for easy setup of inference servers for both Llama 3.1 models as well as DeepSeek-R1 on an AI cluster. The library supports model sharding through both pipeline parallelism (PP) and tensor parallelism (TP), which users can configure as needed to optimize performance.
-
-## Available Models
-
-Follow the instruction page for each models to deploy them on an AI cluster.
-
-| Model            | Model Size | Huggine Face                                                     | Instruction Page                  |
-|------------------|------------|------------------------------------------------------------------|-----------------------------------|
-| Llama 3.1        | 70B        | [HF Link](https://huggingface.co/meta-llama/Llama-3.1-70B)       | [Link](README_Llama3.1.md)        |
-| Llama 3.1        | 405B       | [HF Link](https://huggingface.co/meta-llama/Llama-3.1-405B)      | [Link](README_Llama3.1.md)        |
-| DeepSeek-R1      | 671B       | [HF Link](https://huggingface.co/deepseek-ai/DeepSeek-R1)        | [Link](README_DeepSeekR1.md)      |
-| DeepSeek-R1-0528 | 671B       | [HF Link](https://huggingface.co/deepseek-ai/DeepSeek-R1-0528)   | [Link](README_DeepSeekR1-0528.md) |
-
-
-> [!NOTE]
-> Follow this repository for regular updates on deployment instructions for the latest models on AI clusters.
-
--->

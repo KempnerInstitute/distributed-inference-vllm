@@ -86,8 +86,8 @@ This prework ensures everyone starts with a shared baseline and helps you unders
 | | Memory requirements ||
 | | Memory Cost of a Single Inference Request ||
 | | Performance Metrics ||
-| 10:45 AM | **[LAB 1.b](lab-1b.md)** | Hands-on: Performance baseline |
-| | **Break** | Coffee break |
+| 10:40 AM | **[LAB 1.b](lab-1b.md)** | Hands-on: Performance baseline |
+| 10:50 AM| **Break** | Coffee break |
 | 11:00 AM | **The Optimization** | |
 | | Why Inference Systems Exist | |
 | | What is vLLM? | |
@@ -99,14 +99,14 @@ This prework ensures everyone starts with a shared baseline and helps you unders
 | | Key Facts for Multi-GPU Inference ||
 | | Types of Parallelism ||
 | | Offline/Batch vLLM Inference with Python API ||
-| | **[LAB 2](lab-2.md)** | Hands-on: Optimizing inference with vLLM |
-| 11:45 AM | **The Production** | |
+|11:45 AM | **[LAB 2](lab-2.md)** | Hands-on: Optimizing inference with vLLM |
+| | **The Production** | |
 | | Why Deploy an Inference Server? | |
 | | vLLM Engine Architecture | |
 | | Deploying the vLLM Server on HPC Clusters | |
 | | vLLM Output Format | |
-| | **[LAB 3](lab-3.md)** | Hands-on: Deploy and scale vLLM server |
-| 12:20 PM | Advanced Topics | |
+|12:15 PM | **[LAB 3](lab-3.md)** | Hands-on: Deploy and scale vLLM server |
+| | Advanced Topics | |
 | | Wrap-up and Q&A | Final questions and next steps |
 | 12:30 PM | End | | 
 
