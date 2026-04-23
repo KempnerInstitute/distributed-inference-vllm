@@ -29,9 +29,13 @@ This directory contains everything needed to create a reproducible vLLM environm
 > [!Warning]  
 > `uv` comes with significant amount of files. So it is important to use common cache directory to avoid hitting quota issues and to avoid unnecessary downloads. Please set your cache directory to a common location (e.g. in your lab directory or provided by the workshop) by setting the `UV_CACHE_DIR` environment variable before running `uv` commands.
 
+> [!IMPORTANT]
+> Load the FASRC `python/3.12.11-fasrc02` module **before** creating the venv. `uv`'s default standalone Python omits the C development headers (`Python.h`), which breaks `torch.compile` at runtime. See [Issue: `torch.compile` fails with `Python.h: No such file or directory`](#issue-torchcompile-fails-with-pythonh-no-such-file-or-directory) for details.
+
 ```bash
+module load python/3.12.11-fasrc02          # System Python with C dev headers for torch.compile
 export UV_CACHE_DIR=<your cache directory>  # Set cache directory to avoid quota issues
-uv venv vllm_env --python 3.12 --seed
+uv venv vllm_env --python $(which python) --seed
 source vllm_env/bin/activate
 ```
 
@@ -106,9 +110,15 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 #### Step 2: Create Virtual Environment
 
+> [!IMPORTANT]
+> The FASRC `python/3.12.11-fasrc02` module is **required** here (not just during compilation in Step 1). `uv`'s default standalone Python lacks `Python.h`, which `torch.compile` needs at runtime to build CUDA utility shims. Loading the FASRC module before `uv venv` bakes the correct interpreter — and its dev headers — into the venv's `sysconfig`.
+
 ```bash
-# Create environment
-uv venv vllm_env --python 3.12 --seed
+# Load system Python with C development headers
+module load python/3.12.11-fasrc02
+
+# Create environment against that Python
+uv venv vllm_env --python $(which python) --seed
 
 # Activate it
 source vllm_env/bin/activate
@@ -283,6 +293,28 @@ error: -- unsupported GNU version! gcc versions later than 14 are not supported!
 ```bash
 module load gcc/13.2.0-fasrc01  # NOT gcc/15.x
 ```
+
+#### Issue: `torch.compile` fails with `Python.h: No such file or directory`
+
+```
+/tmp/.../cuda_utils.c:6:10: fatal error: Python.h: No such file or directory
+    6 | #include <Python.h>
+```
+
+**Cause:** The venv was created against `uv`'s default standalone Python build (from [python-build-standalone](https://github.com/astral-sh/python-build-standalone)), which ships without CPython's C development headers. `torch.compile`'s Inductor backend builds a small C extension (`cuda_utils.c`) at runtime that `#include <Python.h>`, and the interpreter's `sysconfig` include dir must contain that header.
+
+**Solution:** Recreate the venv against the FASRC Python module, which is source-built with `--enable-shared` and installs the full dev layout (`include/python3.12/Python.h`, `libpython3.12.so`):
+
+```bash
+module purge
+module load python/3.12.11-fasrc02
+rm -rf vllm_env                                         # delete the broken venv
+uv venv vllm_env --python $(which python) --seed
+source vllm_env/bin/activate
+uv pip install -r requirements-frozen.txt
+```
+
+**Quick workaround without recreating the venv:** disable `torch.compile` by passing `enforce_eager=True` to `LLM(...)` or `--enforce-eager` to `vllm serve`. This avoids the failure but forfeits the compilation speedups.
 
 #### Issue: vLLM 0.2.5 installed instead of 0.11.2
 
