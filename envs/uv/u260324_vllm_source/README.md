@@ -46,8 +46,12 @@ Last tested on March 24, 2026.
 
 2. Install editable vllm package:
 
+> [!IMPORTANT]
+> Load the FASRC `python/3.12.11-fasrc02` module **before** creating the venv. `uv`'s default standalone Python omits the C development headers (`Python.h`), which breaks `torch.compile` at runtime (e.g. `fatal error: Python.h: No such file or directory` while Inductor builds `cuda_utils.c`). Pointing `uv` at the FASRC Python — which includes the full dev layout — avoids this.
+
 ```bash
-uv venv --python 3.12.11
+module load python/3.12.11-fasrc02
+uv venv --python $(which python)
 source .venv/bin/activate
 VLLM_USE_PRECOMPILED=1 uv pip install --editable .
 ```

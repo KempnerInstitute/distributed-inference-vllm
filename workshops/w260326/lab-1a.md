@@ -58,8 +58,12 @@ git checkout a32783bb35c6120df88d57609c8e454f9131f0a1
 export UV_CACHE_DIR=/n/netscratch/kempner_lab/Everyone/inference_workshop/uv_cache_dir  
 ```
 
+> [!IMPORTANT]
+> Load the FASRC `python/3.12.11-fasrc02` module **before** creating the venv. `uv`'s default standalone Python ships without the C development headers (`Python.h`), which causes `torch.compile` to fail at runtime in Lab 2 (`fatal error: Python.h: No such file or directory`). Pointing `uv` at the FASRC Python (which includes the full dev layout) avoids the failure.
+
 ```bash
-uv venv --python 3.12.11
+module load python/3.12.11-fasrc02
+uv venv --python $(which python)
 source .venv/bin/activate
 VLLM_USE_PRECOMPILED=1 uv pip install --editable .
 ```
