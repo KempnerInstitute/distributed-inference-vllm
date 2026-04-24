@@ -88,7 +88,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 See [LICENSE](LICENSE) for details.
 
 ## NEWS
-
+- **2026-04-24**: Added uv environment with vLLM built from source ([u260423_vllm_compiled](envs/uv/u260423_vllm_compiled/)). This environment compiles every kernel locally against the FASRC CUDA 12.9 toolchain, with no precompiled wheel or bundled kernels. Use this when patching vLLM kernels or debugging build issues.
 - **2026-03-26**: Added [Large Language Model Distributed Inference](workshops/w260326) workshop materials. The workshop was held virtually university-wide on March 26 for Harvard University affiliates.
 - **2026-03-06**: Added [Meta-Llama-3.1-405B-Instruct-FP8 multi-node](workflows/Meta-Llama-3.1-405B-Instruct-FP8_multinode-server/) workflow. New workflow for deploying the 405B parameter model with FP8 quantization (382GB storage) on 8×H100 or 4×H200 GPUs. Features ~50% memory reduction vs FP16/BF16, improved throughput, and comprehensive HPC deployment guide with Ray cluster initialization, batch processing examples, and production-ready SLURM scripts.
 - **2026-03-04**: First uv environment ([u260304_vllm](envs/uv/u260304_vllm/)) and workflow ([Qwen2.5-32B-Instruct single-GPU inference](workflows/Qwen2.5-32B-Instruct_single-gpu-inference/)). Includes vLLM 0.11.2 with CUDA 12.9 support and comprehensive documentation following the new contribution guidelines.

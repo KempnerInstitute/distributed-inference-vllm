@@ -8,7 +8,7 @@ This directory contains reproducible runtime environment definitions for executi
 
 | Name | Python | vLLM | CUDA | Notes |
 |------|--------|------|------|-------|
-| [u260423_vllm_compiled](uv/u260423_vllm_compiled/) | 3.12.11 | 0.19.2rc1.dev171+ge9f331d72 (built from source) | 12.9.1 | **100% compiled from source.** No precompiled wheel or bundled kernels — every `.cu` / `.cpp` is built locally against the FASRC CUDA 12.9 toolchain.|
+| [u260423_vllm_compiled](uv/u260423_vllm_compiled/) | 3.12.11 | 0.19.2rc1.dev171+ge9f331d72 (built from source) | 12.9.1 | 100% compiled from source. No precompiled wheel or bundled kernels — every `.cu` / `.cpp` is built locally against the FASRC CUDA 12.9 toolchain.|
 | [u260324_vllm_source](uv/u260324_vllm_source/) | 3.12.11 | 0.18.1rc1.dev101+ga32783bb3.precompiled | 12.8 | Editable install of a vLLM git tree using `VLLM_USE_PRECOMPILED=1` — Python-only edits, kernels come from upstream tarball. | 
 | [u260304_vllm](uv/u260304_vllm/) | 3.12.11 | 0.11.2 | 12.9.1 | Precompiled vLLM 0.11.2 wheel. Fastest path to a working inference env. |
 
