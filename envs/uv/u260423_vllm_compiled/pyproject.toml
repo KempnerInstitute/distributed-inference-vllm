@@ -1,0 +1,31 @@
+[project]
+name = "vllm-compiled-env"
+version = "0.1.0"
+description = "Pre-vLLM toolchain for u260423_vllm_compiled (vLLM itself is installed editable from source at a pinned upstream commit)"
+requires-python = ">=3.12,<3.13"
+# These are the toolchain / torch-family deps needed BEFORE the from-source vLLM
+# build runs. The real build-time pin list comes from vLLM's own
+# requirements/build/cuda.txt at the pinned commit (see setup.sh). This
+# pyproject.toml is mostly a formality for uv venv bookkeeping.
+dependencies = [
+    "torch==2.11.0",
+    "torchvision==0.26.0",
+    "torchaudio==2.11.0",
+    "ninja",
+    "packaging",
+    "wheel",
+    "setuptools",
+    "setuptools-scm>=8",
+    "cmake>=3.26",
+    "jinja2>=3.1.6",
+]
+
+[tool.uv]
+index-url = "https://pypi.org/simple"
+
+[[tool.uv.index]]
+name = "pytorch-cu129"
+url = "https://download.pytorch.org/whl/cu129"
+
+[tool.uv.pip]
+index-strategy = "unsafe-best-match"
